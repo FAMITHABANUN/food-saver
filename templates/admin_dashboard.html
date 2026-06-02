@@ -1,61 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Admin Dashboard</title>
+
 <style>
-body{font-family:Arial;background:#f5f5f5}
 
-.card{
+body{
+
+    margin:0;
+
+    font-family:Arial;
+
+    background: linear-gradient(135deg,#11998e,#38ef7d);
+
+    color:white;
+
+    text-align:center;
+}
+
+.box{
+
+    margin-top:100px;
+}
+
+h1{
+    font-size:40px;
+}
+
+p{
+    font-size:20px;
+}
+
+.button{
+
+    display:inline-block;
+
+    margin-top:20px;
+
+    padding:12px 20px;
+
     background:white;
-    padding:20px;
-    margin:20px;
+
+    color:#11998e;
+
+    text-decoration:none;
+
     border-radius:10px;
-    text-align:center;
+
+    font-weight:bold;
 }
 
-table{
-    width:90%;
-    margin:auto;
-    border-collapse:collapse;
-}
-
-th,td{
-    padding:10px;
-    border:1px solid #ccc;
-    text-align:center;
-}
-
-th{background:#00c853;color:white}
-
-.delete{
-    color:red;
-}
 </style>
 </head>
 
 <body>
 
-<div class="card">
-<h2>📊 Admin Dashboard</h2>
-<h3>Total Donations: {{ total }}</h3>
+<div class="box">
+
+<h1>🍱 Food Saver Admin</h1>
+
+<p>Welcome Admin</p>
+
+<p>Manage food donations easily.</p>
+
+<a class="button" href="/donate">Donate Food</a>
+
 </div>
-
-<table>
-<tr>
-<th>Name</th><th>Food</th><th>Qty</th><th>Action</th>
-</tr>
-
-{% for row in data %}
-<tr>
-<td>{{ row[0] }}</td>
-<td>{{ row[1] }}</td>
-<td>{{ row[2] }}</td>
-<td><a class="delete" href="/delete/{{ loop.index0 }}">Delete</a></td>
-</tr>
-{% endfor %}
-</table>
-
-<br>
-<center><a href="/logout">Logout</a></center>
 
 </body>
 </html>

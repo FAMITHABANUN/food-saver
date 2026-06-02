@@ -1,58 +1,111 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login</title>
+<title>Food Saver Login</title>
+
 <style>
+
 body{
-    font-family: Arial;
-    background: linear-gradient(120deg,#00c853,#b2ff59);
+    margin:0;
+    padding:0;
+    height:100vh;
+
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+
+    font-family:Arial;
+
+    background: linear-gradient(135deg,#00c853,#64dd17,#b2ff59);
 }
 
 .box{
+
+    width:320px;
+
     background:white;
+
     padding:30px;
-    border-radius:15px;
-    width:90%;
-    max-width:350px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+
+    border-radius:20px;
+
+    box-shadow:0px 5px 20px rgba(0,0,0,0.3);
+}
+
+h2{
+    text-align:center;
+    color:#00c853;
 }
 
 input{
+
     width:100%;
-    padding:10px;
-    margin:10px 0;
+
+    padding:12px;
+
+    margin-top:12px;
+
+    border-radius:8px;
+
+    border:1px solid gray;
 }
 
 button{
+
     width:100%;
-    padding:10px;
-    background:#00c853;
+
+    padding:12px;
+
+    margin-top:20px;
+
     border:none;
+
+    border-radius:8px;
+
+    background:#00c853;
+
     color:white;
-    font-weight:bold;
+
+    font-size:16px;
+
+    cursor:pointer;
 }
 
-a{color:green}
+button:hover{
+    background:#009624;
+}
+
+p{
+    text-align:center;
+}
+
+a{
+    color:#00c853;
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="box">
-<h2>🔐 Food Saver Login</h2>
+
+<h2>🍱 Food Saver Login</h2>
 
 <form method="POST">
-<input name="username" placeholder="Username">
-<input name="password" type="password" placeholder="Password">
-<button>Login</button>
+
+<input type="text" name="username" placeholder="Username" required>
+
+<input type="password" name="password" placeholder="Password" required>
+
+<button type="submit">Login</button>
+
 </form>
 
-<p>New user? <a href="/register">Register</a></p>
+<p>New User? <a href="/register">Register</a></p>
+
 <p>Admin: admin / 1234</p>
+
 </div>
 
 </body>
