@@ -1,124 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Food Saver Admin</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
 
 <style>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
 body{
-
-    font-family:Arial;
-
-    background: linear-gradient(135deg,#00c853,#00e676,#69f0ae);
-
-    min-height:100vh;
-
-    padding:20px;
+margin:0;
+padding:20px;
+font-family:Arial;
+background:linear-gradient(135deg,#00c853,#69f0ae);
 }
 
 .container{
-
-    max-width:900px;
-
-    margin:auto;
-
-    background:white;
-
-    border-radius:20px;
-
-    padding:25px;
-
-    box-shadow:0px 8px 25px rgba(0,0,0,0.3);
+background:white;
+padding:25px;
+border-radius:20px;
+max-width:900px;
+margin:auto;
 }
 
 h1{
-
-    text-align:center;
-
-    color:#00c853;
-
-    margin-bottom:25px;
-}
-
-.button{
-
-    display:inline-block;
-
-    padding:12px 20px;
-
-    background:#00c853;
-
-    color:white;
-
-    text-decoration:none;
-
-    border-radius:10px;
-
-    margin-bottom:20px;
+text-align:center;
+color:#00c853;
 }
 
 table{
-
-    width:100%;
-
-    border-collapse:collapse;
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
 }
 
 th{
-
-    background:#00c853;
-
-    color:white;
-
-    padding:12px;
+background:#00c853;
+color:white;
+padding:12px;
 }
 
 td{
-
-    padding:12px;
-
-    border-bottom:1px solid #ccc;
-
-    text-align:center;
-}
-
-tr:hover{
-
-    background:#f1f1f1;
-}
-
-.empty{
-
-    text-align:center;
-
-    color:gray;
-
-    margin-top:20px;
+padding:12px;
+border-bottom:1px solid #ccc;
+text-align:center;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>🍱 Food Saver Admin Dashboard</h1>
-
-<a class="button" href="/donate">
-+ Add Donation
-</a>
-
-{% if donations %}
+<h1>🍱 Food Saver Admin Panel</h1>
 
 <table>
 
@@ -141,14 +73,6 @@ tr:hover{
 {% endfor %}
 
 </table>
-
-{% else %}
-
-<p class="empty">
-No donations available yet.
-</p>
-
-{% endif %}
 
 </div>
 
