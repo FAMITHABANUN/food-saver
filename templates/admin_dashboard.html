@@ -15,74 +15,44 @@
 
 body{
 
-    height:100vh;
-
     font-family:Arial;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
 
     background: linear-gradient(135deg,#00c853,#00e676,#69f0ae);
 
+    min-height:100vh;
+
+    padding:20px;
 }
 
 .container{
 
-    width:90%;
-    max-width:380px;
+    max-width:900px;
 
-    background: rgba(255,255,255,0.15);
+    margin:auto;
 
-    backdrop-filter: blur(10px);
+    background:white;
 
-    padding:30px;
+    border-radius:20px;
 
-    border-radius:25px;
+    padding:25px;
 
-    text-align:center;
-
-    color:white;
-
-    box-shadow:0px 8px 30px rgba(0,0,0,0.3);
+    box-shadow:0px 8px 25px rgba(0,0,0,0.3);
 }
 
 h1{
 
-    font-size:32px;
-
-    margin-bottom:15px;
-}
-
-p{
-
-    margin-top:10px;
-
-    font-size:18px;
-}
-
-.card{
-
-    background:white;
+    text-align:center;
 
     color:#00c853;
 
-    margin-top:25px;
-
-    padding:20px;
-
-    border-radius:20px;
+    margin-bottom:25px;
 }
 
 .button{
 
-    display:block;
+    display:inline-block;
 
-    margin-top:15px;
-
-    padding:14px;
+    padding:12px 20px;
 
     background:#00c853;
 
@@ -90,16 +60,48 @@ p{
 
     text-decoration:none;
 
-    border-radius:12px;
+    border-radius:10px;
 
-    font-size:18px;
-
-    font-weight:bold;
+    margin-bottom:20px;
 }
 
-.button:hover{
+table{
 
-    background:#009624;
+    width:100%;
+
+    border-collapse:collapse;
+}
+
+th{
+
+    background:#00c853;
+
+    color:white;
+
+    padding:12px;
+}
+
+td{
+
+    padding:12px;
+
+    border-bottom:1px solid #ccc;
+
+    text-align:center;
+}
+
+tr:hover{
+
+    background:#f1f1f1;
+}
+
+.empty{
+
+    text-align:center;
+
+    color:gray;
+
+    margin-top:20px;
 }
 
 </style>
@@ -110,33 +112,43 @@ p{
 
 <div class="container">
 
-<h1>🍱 Food Saver</h1>
-
-<p>Admin Dashboard</p>
-
-<div class="card">
-
-<h2>Manage Donations</h2>
-
-<p>Track and manage donated food easily.</p>
+<h1>🍱 Food Saver Admin Dashboard</h1>
 
 <a class="button" href="/donate">
-Donate Food
++ Add Donation
 </a>
 
-</div>
+{% if donations %}
 
-<div class="card">
+<table>
 
-<h2>User Management</h2>
+<tr>
+<th>Name</th>
+<th>Food</th>
+<th>Quantity</th>
+<th>Address</th>
+</tr>
 
-<p>View user registrations and activities.</p>
+{% for item in donations %}
 
-<a class="button" href="/register">
-Users
-</a>
+<tr>
+<td>{{ item.name }}</td>
+<td>{{ item.food }}</td>
+<td>{{ item.quantity }}</td>
+<td>{{ item.address }}</td>
+</tr>
 
-</div>
+{% endfor %}
+
+</table>
+
+{% else %}
+
+<p class="empty">
+No donations available yet.
+</p>
+
+{% endif %}
 
 </div>
 

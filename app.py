@@ -2,13 +2,17 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
+# ---------------- STORAGE ----------------
+donations = []
+
+
 # ---------------- HOME ----------------
 @app.route("/")
 def home():
     return redirect(url_for("admin_login"))
 
 
-# ---------------- LOGIN ----------------
+# ---------------- ADMIN LOGIN ----------------
 @app.route("/login", methods=["GET", "POST"])
 def admin_login():
 
@@ -17,7 +21,7 @@ def admin_login():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        if username == "admin" and password == "foodsaver2026":
+        if username == "admin" and password == "1234":
             return redirect(url_for("admin_dashboard"))
 
         return "Invalid Login"
@@ -25,7 +29,7 @@ def admin_login():
     return render_template("admin_login.html")
 
 
-# ---------------- REGISTER ----------------
+# ---------------- USER REGISTER ----------------
 @app.route("/register", methods=["GET", "POST"])
 def user_register():
 
@@ -33,12 +37,6 @@ def user_register():
         return redirect(url_for("donate_food"))
 
     return render_template("user_register.html")
-
-
-# ---------------- ADMIN DASHBOARD ----------------
-@app.route("/admin-dashboard")
-def admin_dashboard():
-    return render_template("admin_dashboard.html")
 
 
 # ---------------- DONATE FOOD ----------------
@@ -56,16 +54,27 @@ def submit_donation():
     quantity = request.form.get("quantity")
     address = request.form.get("address")
 
+    # SAVE DATA
+    donations.append({
+        "name": name,
+        "food": food,
+        "quantity": quantity,
+        "address": address
+    })
+
     return render_template(
         "success.html",
         message="Food Donation Submitted Successfully!"
     )
 
 
-# ---------------- SUCCESS ----------------
-@app.route("/success")
-def success():
-    return render_template("success.html")
+# ---------------- ADMIN DASHBOARD ----------------
+@app.route("/admin-dashboard")
+def admin_dashboard():
+    return render_template(
+        "admin_dashboard.html",
+        donations=donations
+    )
 
 
 # ---------------- RUN APP ----------------
