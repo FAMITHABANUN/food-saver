@@ -1,69 +1,142 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin Dashboard</title>
+<title>Food Saver Admin</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
 
-    margin:0;
+    height:100vh;
 
     font-family:Arial;
 
-    background: linear-gradient(135deg,#11998e,#38ef7d);
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background: linear-gradient(135deg,#00c853,#00e676,#69f0ae);
+
+}
+
+.container{
+
+    width:90%;
+    max-width:380px;
+
+    background: rgba(255,255,255,0.15);
+
+    backdrop-filter: blur(10px);
+
+    padding:30px;
+
+    border-radius:25px;
+
+    text-align:center;
 
     color:white;
 
-    text-align:center;
-}
-
-.box{
-
-    margin-top:100px;
+    box-shadow:0px 8px 30px rgba(0,0,0,0.3);
 }
 
 h1{
-    font-size:40px;
+
+    font-size:32px;
+
+    margin-bottom:15px;
 }
 
 p{
-    font-size:20px;
+
+    margin-top:10px;
+
+    font-size:18px;
+}
+
+.card{
+
+    background:white;
+
+    color:#00c853;
+
+    margin-top:25px;
+
+    padding:20px;
+
+    border-radius:20px;
 }
 
 .button{
 
-    display:inline-block;
+    display:block;
 
-    margin-top:20px;
+    margin-top:15px;
 
-    padding:12px 20px;
+    padding:14px;
 
-    background:white;
+    background:#00c853;
 
-    color:#11998e;
+    color:white;
 
     text-decoration:none;
 
-    border-radius:10px;
+    border-radius:12px;
+
+    font-size:18px;
 
     font-weight:bold;
 }
 
+.button:hover{
+
+    background:#009624;
+}
+
 </style>
+
 </head>
 
 <body>
 
-<div class="box">
+<div class="container">
 
-<h1>🍱 Food Saver Admin</h1>
+<h1>🍱 Food Saver</h1>
 
-<p>Welcome Admin</p>
+<p>Admin Dashboard</p>
 
-<p>Manage food donations easily.</p>
+<div class="card">
 
-<a class="button" href="/donate">Donate Food</a>
+<h2>Manage Donations</h2>
+
+<p>Track and manage donated food easily.</p>
+
+<a class="button" href="/donate">
+Donate Food
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>User Management</h2>
+
+<p>View user registrations and activities.</p>
+
+<a class="button" href="/register">
+Users
+</a>
+
+</div>
 
 </div>
 
