@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<style>
+body{
+    font-family: Arial;
+    background: linear-gradient(120deg,#00c853,#b2ff59);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.box{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    width:90%;
+    max-width:350px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#00c853;
+    border:none;
+    color:white;
+    font-weight:bold;
+}
+
+a{color:green}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>🔐 Food Saver Login</h2>
+
+<form method="POST">
+<input name="username" placeholder="Username">
+<input name="password" type="password" placeholder="Password">
+<button>Login</button>
+</form>
+
+<p>New user? <a href="/register">Register</a></p>
+<p>Admin: admin / 1234</p>
+</div>
+
+</body>
+</html>
