@@ -44,17 +44,12 @@ def user_login():
         for user in users:
 
             if user["username"] == username and user["password"] == password:
-                return redirect(url_for("user_dashboard"))
+
+                return redirect(url_for("donate_food"))
 
         return "Invalid User Login"
 
     return render_template("user_login.html")
-
-
-# ---------------- USER DASHBOARD ----------------
-@app.route("/user-dashboard")
-def user_dashboard():
-    return render_template("user_dashboard.html")
 
 
 # ---------------- DONATE FOOD ----------------
@@ -93,6 +88,7 @@ def admin_login():
         password = request.form.get("password")
 
         if username == "admin" and password == "foodsaver2026":
+
             return redirect(url_for("admin_dashboard"))
 
         return "Invalid Admin Login"
