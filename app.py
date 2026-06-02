@@ -2,13 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
-# ---------------- HOME PAGE ----------------
+# ---------------- HOME ----------------
 @app.route("/")
 def home():
     return redirect(url_for("admin_login"))
 
 
-# ---------------- ADMIN LOGIN ----------------
+# ---------------- LOGIN ----------------
 @app.route("/login", methods=["GET", "POST"])
 def admin_login():
 
@@ -17,7 +17,7 @@ def admin_login():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        if username == "admin" and password == "1234":
+        if username == "admin" and password == "foodsaver2026":
             return redirect(url_for("admin_dashboard"))
 
         return "Invalid Login"
@@ -25,7 +25,7 @@ def admin_login():
     return render_template("admin_login.html")
 
 
-# ---------------- USER REGISTER ----------------
+# ---------------- REGISTER ----------------
 @app.route("/register", methods=["GET", "POST"])
 def user_register():
 
@@ -42,20 +42,27 @@ def admin_dashboard():
 
 
 # ---------------- DONATE FOOD ----------------
-@app.route("/donate", methods=["GET", "POST"])
+@app.route("/donate")
 def donate_food():
-
-    if request.method == "POST":
-
-        return render_template(
-            "success.html",
-            message="Food Donation Submitted Successfully!"
-        )
-
     return render_template("donate_food.html")
 
 
-# ---------------- SUCCESS PAGE ----------------
+# ---------------- SUBMIT DONATION ----------------
+@app.route("/submit-donation", methods=["POST"])
+def submit_donation():
+
+    name = request.form.get("name")
+    food = request.form.get("food")
+    quantity = request.form.get("quantity")
+    address = request.form.get("address")
+
+    return render_template(
+        "success.html",
+        message="Food Donation Submitted Successfully!"
+    )
+
+
+# ---------------- SUCCESS ----------------
 @app.route("/success")
 def success():
     return render_template("success.html")
