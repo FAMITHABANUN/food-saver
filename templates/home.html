@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
@@ -14,8 +14,8 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Poppins',sans-serif;
 scroll-behavior:smooth;
+font-family:'Poppins',sans-serif;
 }
 
 body{
@@ -24,7 +24,7 @@ background:#0f172a;
 color:white;
 }
 
-/* Animated Background */
+/* HERO SECTION */
 
 .hero{
 
@@ -36,7 +36,7 @@ align-items:center;
 text-align:center;
 padding:120px 20px;
 
-background:linear-gradient(-45deg,#11998e,#38ef7d,#0f2027,#2c5364);
+background:linear-gradient(-45deg,#00ffcc,#11998e,#0f2027,#2c5364);
 
 background-size:400% 400%;
 
@@ -59,7 +59,7 @@ background-position:0% 50%;
 
 }
 
-/* Navbar */
+/* NAVBAR */
 
 .navbar{
 
@@ -72,18 +72,32 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 
-background:rgba(15,23,42,0.5);
+background:rgba(15,23,42,0.55);
 
 backdrop-filter:blur(12px);
 
 z-index:1000;
 }
 
+/* LOGO */
+
 .logo{
 
-font-size:28px;
+font-size:30px;
 font-weight:700;
+
+font-family:'Orbitron',sans-serif;
+
+color:#ffffff;
+
+text-shadow:
+0 0 5px #38ef7d,
+0 0 10px #38ef7d,
+0 0 20px #38ef7d,
+0 0 40px #38ef7d;
 }
+
+/* NAV LINKS */
 
 .nav-links a{
 
@@ -97,31 +111,55 @@ transition:0.3s;
 .nav-links a:hover{
 
 color:#38ef7d;
+
+text-shadow:
+0 0 10px #38ef7d;
 }
 
-/* Hero */
+/* HERO CONTENT */
 
 .hero-content{
 
-max-width:750px;
+max-width:760px;
+
 animation:fadeUp 1s ease;
 }
 
+/* HERO TITLE */
+
 .hero h1{
 
-font-size:65px;
-margin-bottom:20px;
+font-size:70px;
+
 line-height:1.2;
+
+margin-bottom:25px;
+
+font-family:'Orbitron',sans-serif;
+
+color:white;
+
+text-shadow:
+0 0 10px #ffffff,
+0 0 20px #38ef7d,
+0 0 40px #38ef7d,
+0 0 80px #38ef7d;
 }
+
+/* HERO TEXT */
 
 .hero p{
 
 font-size:18px;
+
 line-height:1.9;
-margin-bottom:35px;
+
+margin-bottom:40px;
+
+color:#e2e8f0;
 }
 
-/* Buttons */
+/* BUTTONS */
 
 .buttons{
 
@@ -144,29 +182,43 @@ font-weight:600;
 transition:0.4s;
 }
 
+/* PRIMARY BUTTON */
+
 .btn-primary{
 
-background:white;
-color:#11998e;
+background:#38ef7d;
+
+color:#000;
+
+box-shadow:
+0 0 10px #38ef7d,
+0 0 20px #38ef7d,
+0 0 40px #38ef7d;
 }
+
+/* SECONDARY BUTTON */
 
 .btn-secondary{
 
 border:1px solid white;
 
-background:rgba(255,255,255,0.15);
+background:rgba(255,255,255,0.12);
 
 color:white;
 }
 
+/* BUTTON HOVER */
+
 .btn:hover{
 
-transform:translateY(-4px) scale(1.03);
+transform:translateY(-4px) scale(1.05);
 
-box-shadow:0 8px 20px rgba(0,0,0,0.3);
+box-shadow:
+0 0 15px #38ef7d,
+0 0 30px #38ef7d;
 }
 
-/* Features */
+/* FEATURES */
 
 .features{
 
@@ -175,6 +227,8 @@ padding:100px 8%;
 background:#111827;
 }
 
+/* SECTION TITLE */
+
 .section-title{
 
 text-align:center;
@@ -182,7 +236,14 @@ text-align:center;
 font-size:42px;
 
 margin-bottom:60px;
+
+font-family:'Orbitron',sans-serif;
+
+text-shadow:
+0 0 10px #38ef7d;
 }
+
+/* CARDS */
 
 .cards{
 
@@ -203,14 +264,26 @@ border-radius:24px;
 
 backdrop-filter:blur(10px);
 
+border:1px solid rgba(56,239,125,0.4);
+
+box-shadow:
+0 0 10px rgba(56,239,125,0.2);
+
 transition:0.4s;
 }
 
+/* CARD HOVER */
+
 .card:hover{
 
-transform:translateY(-10px);
+transform:translateY(-10px) scale(1.02);
 
 background:rgba(255,255,255,0.12);
+
+box-shadow:
+0 0 15px #38ef7d,
+0 0 30px #38ef7d,
+0 0 60px rgba(56,239,125,0.5);
 }
 
 .card h3{
@@ -218,6 +291,8 @@ background:rgba(255,255,255,0.12);
 font-size:24px;
 
 margin-bottom:18px;
+
+font-family:'Orbitron',sans-serif;
 }
 
 .card p{
@@ -225,9 +300,11 @@ margin-bottom:18px;
 font-size:15px;
 
 line-height:1.8;
+
+color:#e2e8f0;
 }
 
-/* Stats */
+/* STATS */
 
 .stats{
 
@@ -242,6 +319,8 @@ gap:25px;
 background:#0f172a;
 }
 
+/* STAT CARD */
+
 .stat-card{
 
 background:rgba(255,255,255,0.08);
@@ -253,11 +332,17 @@ text-align:center;
 border-radius:22px;
 
 transition:0.4s;
+
+border:1px solid rgba(56,239,125,0.3);
 }
 
 .stat-card:hover{
 
 transform:translateY(-8px);
+
+box-shadow:
+0 0 15px #38ef7d,
+0 0 30px rgba(56,239,125,0.5);
 }
 
 .stat-card h2{
@@ -266,10 +351,17 @@ font-size:42px;
 
 margin-bottom:10px;
 
+font-family:'Orbitron',sans-serif;
+
 color:#38ef7d;
+
+text-shadow:
+0 0 10px #38ef7d,
+0 0 20px #38ef7d,
+0 0 40px #38ef7d;
 }
 
-/* Footer */
+/* FOOTER */
 
 .footer{
 
@@ -282,9 +374,11 @@ background:#020617;
 font-size:14px;
 
 line-height:1.8;
+
+color:#cbd5e1;
 }
 
-/* Animation */
+/* ANIMATION */
 
 @keyframes fadeUp{
 
@@ -300,12 +394,12 @@ transform:translateY(0);
 
 }
 
-/* Mobile */
+/* MOBILE */
 
 @media(max-width:768px){
 
 .hero h1{
-font-size:42px;
+font-size:46px;
 }
 
 .hero p{
@@ -317,7 +411,7 @@ padding:18px 5%;
 }
 
 .logo{
-font-size:22px;
+font-size:24px;
 }
 
 .nav-links a{
@@ -333,7 +427,7 @@ font-size:14px;
 
 <body>
 
-<!-- Navbar -->
+<!-- NAVBAR -->
 
 <div class="navbar">
 
@@ -353,7 +447,7 @@ font-size:14px;
 
 </div>
 
-<!-- Hero -->
+<!-- HERO -->
 
 <section class="hero">
 
@@ -363,7 +457,7 @@ font-size:14px;
 
 <p>
 
-Food Saver is a modern food donation platform designed to reduce food wastage and help needy people through a simple and efficient system.
+Food Saver is a premium food donation platform designed to reduce food wastage and help needy people through a modern and efficient web application.
 
 </p>
 
@@ -387,7 +481,7 @@ Admin Panel
 
 </section>
 
-<!-- Features -->
+<!-- FEATURES -->
 
 <section class="features">
 
@@ -405,7 +499,7 @@ Our Features
 
 <p>
 
-Users can securely register and log in to donate food easily through the platform.
+Users can securely register and log in to donate food through the platform.
 
 </p>
 
@@ -417,7 +511,7 @@ Users can securely register and log in to donate food easily through the platfor
 
 <p>
 
-Submit food donation details including food type, quantity, and address information.
+Submit food donation details including food type, quantity and address information.
 
 </p>
 
@@ -429,7 +523,7 @@ Submit food donation details including food type, quantity, and address informat
 
 <p>
 
-Administrators can monitor and manage donated food information efficiently.
+Administrators can monitor and manage donated food details efficiently.
 
 </p>
 
@@ -439,7 +533,7 @@ Administrators can monitor and manage donated food information efficiently.
 
 </section>
 
-<!-- Stats -->
+<!-- STATS -->
 
 <section class="stats">
 
@@ -469,7 +563,7 @@ Administrators can monitor and manage donated food information efficiently.
 
 </section>
 
-<!-- Footer -->
+<!-- FOOTER -->
 
 <div class="footer">
 
