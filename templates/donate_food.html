@@ -1,64 +1,125 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>Donate Food</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
-body{
+*{
 margin:0;
-height:100vh;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+min-height:100vh;
+
 display:flex;
+
 justify-content:center;
+
 align-items:center;
-font-family:Arial;
+
 background:linear-gradient(135deg,#00b09b,#96c93d);
 }
 
-.box{
-background:white;
-padding:30px;
-border-radius:20px;
-width:350px;
+.card{
+
+width:380px;
+
+padding:40px;
+
+border-radius:25px;
+
+background:rgba(255,255,255,0.15);
+
+backdrop-filter:blur(15px);
+
+color:white;
+
+box-shadow:0 8px 32px rgba(0,0,0,0.2);
 }
 
-h2{
+h1{
+
 text-align:center;
-color:#00b09b;
+
+margin-bottom:25px;
 }
 
-input{
+input,select{
+
 width:100%;
-padding:12px;
-margin-top:12px;
-border-radius:10px;
-border:1px solid gray;
+
+padding:14px;
+
+margin-top:15px;
+
+border:none;
+
+outline:none;
+
+border-radius:12px;
 }
 
 button{
+
 width:100%;
-padding:12px;
+
+padding:14px;
+
 margin-top:20px;
-background:#00b09b;
-color:white;
+
 border:none;
-border-radius:10px;
+
+border-radius:12px;
+
+background:white;
+
+color:#00b09b;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:0.3s;
+}
+
+button:hover{
+
+transform:scale(1.03);
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="box">
+<div class="card">
 
-<h2>🍲 Donate Food</h2>
+<h1>🍲 Donate Food</h1>
 
 <form method="POST">
 
 <input type="text" name="name" placeholder="Your Name" required>
 
-<input type="text" name="food" placeholder="Food Item" required>
+<select name="food">
+
+<option>Rice</option>
+<option>Bread</option>
+<option>Vegetables</option>
+<option>Fruits</option>
+<option>Meals</option>
+
+</select>
 
 <input type="text" name="quantity" placeholder="Quantity" required>
 

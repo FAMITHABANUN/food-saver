@@ -1,43 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>Success</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
 height:100vh;
+
 display:flex;
+
 justify-content:center;
+
 align-items:center;
-font-family:Arial;
+
 background:linear-gradient(135deg,#00b09b,#96c93d);
 }
 
-.box{
-background:white;
-padding:40px;
-border-radius:20px;
+.card{
+
+padding:50px;
+
+border-radius:25px;
+
+background:rgba(255,255,255,0.15);
+
+backdrop-filter:blur(15px);
+
+color:white;
+
 text-align:center;
+
+box-shadow:0 8px 32px rgba(0,0,0,0.2);
 }
 
 a{
+
 display:inline-block;
-margin-top:20px;
-padding:12px 20px;
-background:#00b09b;
-color:white;
+
+margin-top:25px;
+
+padding:14px 25px;
+
+background:white;
+
+color:#00b09b;
+
 text-decoration:none;
-border-radius:10px;
+
+border-radius:12px;
+
+font-weight:600;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="box">
+<div class="card">
 
 <h1>{{ message }}</h1>
 

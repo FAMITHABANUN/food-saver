@@ -1,62 +1,113 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>Admin Login</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
 height:100vh;
+
 display:flex;
+
 justify-content:center;
+
 align-items:center;
-font-family:Arial;
+
 background:linear-gradient(135deg,#ff512f,#dd2476);
 }
 
-.box{
-background:white;
-padding:30px;
-border-radius:20px;
-width:320px;
+.card{
+
+width:350px;
+
+padding:40px;
+
+border-radius:25px;
+
+background:rgba(255,255,255,0.15);
+
+backdrop-filter:blur(15px);
+
+color:white;
+
+box-shadow:0 8px 32px rgba(0,0,0,0.2);
 }
 
-h2{
+h1{
+
 text-align:center;
-color:#dd2476;
+
+margin-bottom:25px;
 }
 
 input{
+
 width:100%;
-padding:12px;
-margin-top:12px;
-border-radius:10px;
-border:1px solid gray;
+
+padding:14px;
+
+margin-top:15px;
+
+border:none;
+
+outline:none;
+
+border-radius:12px;
 }
 
 button{
+
 width:100%;
-padding:12px;
+
+padding:14px;
+
 margin-top:20px;
-background:#dd2476;
-color:white;
+
 border:none;
-border-radius:10px;
+
+border-radius:12px;
+
+background:white;
+
+color:#dd2476;
+
+font-weight:600;
+
+cursor:pointer;
 }
 
-p{
+.info{
+
+margin-top:20px;
+
 text-align:center;
+
+font-size:14px;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="box">
+<div class="card">
 
-<h2>🔐 Admin Login</h2>
+<h1>🔐 Admin Login</h1>
 
 <form method="POST">
 
@@ -68,7 +119,11 @@ text-align:center;
 
 </form>
 
-<p>admin / foodsaver2026</p>
+<div class="info">
+
+admin / foodsaver2026
+
+</div>
 
 </div>
 

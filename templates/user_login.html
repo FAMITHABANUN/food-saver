@@ -1,71 +1,146 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>User Login</title>
+
+<title>Food Saver</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
 
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
 height:100vh;
+
 display:flex;
+
 justify-content:center;
+
 align-items:center;
-font-family:Arial;
+
 background:linear-gradient(135deg,#11998e,#38ef7d);
+
+overflow:hidden;
 }
 
-.box{
-background:white;
-padding:30px;
-border-radius:20px;
-width:320px;
-box-shadow:0 8px 20px rgba(0,0,0,0.3);
-}
+.card{
 
-h2{
+width:350px;
+
+padding:40px;
+
+border-radius:25px;
+
+background:rgba(255,255,255,0.15);
+
+backdrop-filter:blur(15px);
+
+box-shadow:0 8px 32px rgba(0,0,0,0.2);
+
 text-align:center;
-color:#11998e;
-}
 
-input{
-width:100%;
-padding:12px;
-margin-top:12px;
-border-radius:10px;
-border:1px solid gray;
-}
-
-button{
-width:100%;
-padding:12px;
-margin-top:20px;
-background:#11998e;
 color:white;
-border:none;
-border-radius:10px;
-font-size:16px;
 }
 
-a{
-text-decoration:none;
-color:#11998e;
+h1{
+
+font-size:32px;
+
+margin-bottom:10px;
 }
 
 p{
-text-align:center;
+
+margin-bottom:25px;
+
+font-size:14px;
+}
+
+input{
+
+width:100%;
+
+padding:14px;
+
+margin-top:15px;
+
+border:none;
+
+outline:none;
+
+border-radius:12px;
+
+font-size:15px;
+}
+
+button{
+
+width:100%;
+
+padding:14px;
+
+margin-top:20px;
+
+border:none;
+
+border-radius:12px;
+
+background:white;
+
+color:#11998e;
+
+font-size:16px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:0.3s;
+}
+
+button:hover{
+
+transform:scale(1.03);
+}
+
+a{
+
+color:white;
+
+text-decoration:none;
+
+font-size:14px;
+}
+
+.links{
+
+margin-top:20px;
+
+display:flex;
+
+justify-content:space-between;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="box">
+<div class="card">
 
-<h2>🍱 Food Saver</h2>
+<h1>🍱 Food Saver</h1>
+
+<p>Share Food, Share Hope</p>
 
 <form method="POST">
 
@@ -73,13 +148,17 @@ text-align:center;
 
 <input type="password" name="password" placeholder="Password" required>
 
-<button type="submit">User Login</button>
+<button type="submit">Login</button>
 
 </form>
 
-<p><a href="/register">New User Register</a></p>
+<div class="links">
 
-<p><a href="/admin-login">Admin Login</a></p>
+<a href="/register">Register</a>
+
+<a href="/admin-login">Admin</a>
+
+</div>
 
 </div>
 

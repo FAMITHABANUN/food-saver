@@ -1,78 +1,175 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>Admin Dashboard</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
-body{
+*{
 margin:0;
-padding:20px;
-font-family:Arial;
-background:linear-gradient(135deg,#00c853,#69f0ae);
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+min-height:100vh;
+
+padding:30px;
+
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 }
 
 .container{
-background:white;
-padding:25px;
-border-radius:20px;
-max-width:900px;
+
+max-width:1100px;
+
 margin:auto;
 }
 
-h1{
-text-align:center;
-color:#00c853;
+.top{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:30px;
+
+color:white;
+}
+
+.count{
+
+background:rgba(255,255,255,0.15);
+
+padding:15px 25px;
+
+border-radius:15px;
+
+backdrop-filter:blur(10px);
+}
+
+.table-box{
+
+background:rgba(255,255,255,0.12);
+
+padding:25px;
+
+border-radius:20px;
+
+backdrop-filter:blur(10px);
 }
 
 table{
+
 width:100%;
+
 border-collapse:collapse;
-margin-top:20px;
+
+color:white;
 }
 
 th{
-background:#00c853;
-color:white;
-padding:12px;
+
+padding:15px;
+
+background:rgba(255,255,255,0.2);
 }
 
 td{
-padding:12px;
-border-bottom:1px solid #ccc;
+
+padding:15px;
+
 text-align:center;
+
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+tr:hover{
+
+background:rgba(255,255,255,0.08);
+}
+
+.footer{
+
+text-align:center;
+
+margin-top:25px;
+
+color:white;
+
+font-size:14px;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>🍱 Food Saver Admin Panel</h1>
+<div class="top">
+
+<div>
+
+<h1>🍱 Food Saver</h1>
+
+<p>Admin Dashboard</p>
+
+</div>
+
+<div class="count">
+
+Total Donations: {{ donations|length }}
+
+</div>
+
+</div>
+
+<div class="table-box">
 
 <table>
 
 <tr>
+
 <th>Name</th>
 <th>Food</th>
 <th>Quantity</th>
 <th>Address</th>
+
 </tr>
 
 {% for item in donations %}
 
 <tr>
+
 <td>{{ item.name }}</td>
 <td>{{ item.food }}</td>
 <td>{{ item.quantity }}</td>
 <td>{{ item.address }}</td>
+
 </tr>
 
 {% endfor %}
 
 </table>
+
+</div>
+
+<div class="footer">
+
+© 2026 Food Saver – Share Food, Share Hope
+
+</div>
 
 </div>
 
