@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Food Saver</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#0f172a;
+color:white;
+overflow-x:hidden;
+}
+
+.navbar{
+
+width:100%;
+padding:20px 8%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:fixed;
+top:0;
+background:rgba(15,23,42,0.6);
+backdrop-filter:blur(10px);
+z-index:1000;
+}
+
+.logo{
+font-size:28px;
+font-weight:700;
+}
+
+.nav-links a{
+
+color:white;
+text-decoration:none;
+margin-left:25px;
+font-size:15px;
+transition:0.3s;
+}
+
+.nav-links a:hover{
+color:#38ef7d;
+}
+
+.hero{
+
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:120px 20px;
+background:linear-gradient(135deg,#11998e,#38ef7d);
+}
+
+.hero-content{
+max-width:700px;
+}
+
+.hero h1{
+
+font-size:60px;
+margin-bottom:20px;
+}
+
+.hero p{
+
+font-size:18px;
+line-height:1.8;
+margin-bottom:35px;
+}
+
+.buttons{
+
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.btn{
+
+padding:15px 30px;
+border-radius:12px;
+text-decoration:none;
+font-weight:600;
+transition:0.3s;
+}
+
+.btn-primary{
+
+background:white;
+color:#11998e;
+}
+
+.btn-secondary{
+
+background:rgba(255,255,255,0.2);
+border:1px solid white;
+color:white;
+}
+
+.btn:hover{
+transform:translateY(-3px);
+}
+
+.features{
+
+padding:80px 8%;
+background:#111827;
+}
+
+.section-title{
+
+text-align:center;
+font-size:40px;
+margin-bottom:50px;
+}
+
+.cards{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+}
+
+.card{
+
+background:rgba(255,255,255,0.08);
+padding:30px;
+border-radius:20px;
+backdrop-filter:blur(10px);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+}
+
+.card h3{
+
+margin-bottom:15px;
+font-size:24px;
+}
+
+.card p{
+
+line-height:1.7;
+font-size:15px;
+}
+
+.footer{
+
+padding:25px;
+text-align:center;
+background:#0f172a;
+font-size:14px;
+}
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:42px;
+}
+
+.hero p{
+font-size:16px;
+}
+
+.navbar{
+padding:18px 5%;
+}
+
+.logo{
+font-size:22px;
+}
+
+.nav-links a{
+margin-left:15px;
+font-size:14px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+<div class="logo">
+🍱 Food Saver
+</div>
+
+<div class="nav-links">
+
+<a href="/user-login">User</a>
+
+<a href="/register">Register</a>
+
+<a href="/admin-login">Admin</a>
+
+</div>
+
+</div>
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>Share Food, Share Hope</h1>
+
+<p>
+
+Food Saver is a modern food donation platform designed to reduce food wastage and help needy people through a simple and efficient web-based system.
+
+</p>
+
+<div class="buttons">
+
+<a href="/user-login" class="btn btn-primary">
+
+Get Started
+
+</a>
+
+<a href="/admin-login" class="btn btn-secondary">
+
+Admin Panel
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="features">
+
+<h2 class="section-title">
+Our Features
+</h2>
+
+<div class="cards">
+
+<div class="card">
+
+<h3>👤 User Login</h3>
+
+<p>
+
+Users can securely register and log in to donate food easily through the platform.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>🍲 Food Donation</h3>
+
+<p>
+
+Submit food donation details including food type, quantity, and address information.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>📊 Admin Dashboard</h3>
+
+<p>
+
+Administrators can monitor and manage donated food information efficiently.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<div class="footer">
+
+© 2026 Food Saver – Share Food, Share Hope
+
+</div>
+
+</body>
+</html>

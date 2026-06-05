@@ -6,11 +6,10 @@ app = Flask(__name__)
 users = []
 donations = []
 
-
 # ---------------- HOME ----------------
 @app.route("/")
 def home():
-    return redirect(url_for("user_login"))
+    return render_template("home.html")
 
 
 # ---------------- USER REGISTER ----------------
