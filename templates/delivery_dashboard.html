@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Delivery Dashboard</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+padding:20px;
+}
+
+h1{
+text-align:center;
+color:#2c3e50;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+margin-top:20px;
+}
+
+th{
+background:#27ae60;
+color:white;
+padding:12px;
+}
+
+td{
+padding:12px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+tr:nth-child(even){
+background:#f9f9f9;
+}
+
+.status{
+font-weight:bold;
+color:#e67e22;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>FoodSaver Delivery Dashboard</h1>
+
+<table>
+
+<tr>
+<th>Donor</th>
+<th>Food</th>
+<th>Quantity</th>
+<th>Address</th>
+<th>Status</th>
+<th>Delivery Person</th>
+<th>Pickup Time</th>
+</tr>
+
+{% for donation in donations %}
+
+<tr>
+
+<td>{{ donation.name }}</td>
+
+<td>{{ donation.food }}</td>
+
+<td>{{ donation.quantity }}</td>
+
+<td>{{ donation.address }}</td>
+
+<td class="status">{{ donation.status }}</td>
+
+<td>{{ donation.delivery_person }}</td>
+
+<td>{{ donation.pickup_time }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

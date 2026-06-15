@@ -1,9 +1,1 @@
-famitha banu,idli,3 parcels
-famitha banu,idli,3 parcels
-famitha banu,idli,3 parcels
-famitha banu,idli,3 parcels
-famitha banu,idli,3 parcels
-musfira,briyani,2 kg
-famitha banu,briyani,7kg
-,,
-famitha banu,briyani,7kg
+name,food,quantity,address,status,delivery_person,pickup_time
