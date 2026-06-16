@@ -1,177 +1,216 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Admin Dashboard</title>
-
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Saver | Admin Dashboard</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            fontFamily: {
+                serif: ['Cormorant Garamond', 'serif'],
+                sans: ['Poppins', 'sans-serif']
+            }
+        }
+    }
+}
+</script>
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
 body{
-
-min-height:100vh;
-
-padding:30px;
-
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    font-family:'Poppins',sans-serif;
 }
-
-.container{
-
-max-width:1100px;
-
-margin:auto;
-}
-
-.top{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:30px;
-
-color:white;
-}
-
-.count{
-
-background:rgba(255,255,255,0.15);
-
-padding:15px 25px;
-
-border-radius:15px;
-
-backdrop-filter:blur(10px);
-}
-
-.table-box{
-
-background:rgba(255,255,255,0.12);
-
-padding:25px;
-
-border-radius:20px;
-
-backdrop-filter:blur(10px);
-}
-
-table{
-
-width:100%;
-
-border-collapse:collapse;
-
-color:white;
-}
-
-th{
-
-padding:15px;
-
-background:rgba(255,255,255,0.2);
-}
-
-td{
-
-padding:15px;
-
-text-align:center;
-
-border-bottom:1px solid rgba(255,255,255,0.1);
-}
-
-tr:hover{
-
-background:rgba(255,255,255,0.08);
-}
-
-.footer{
-
-text-align:center;
-
-margin-top:25px;
-
-color:white;
-
-font-size:14px;
-}
-
 </style>
 
 </head>
 
-<body>
+<body class="bg-gradient-to-br from-[#0f172a] to-[#1e293b] min-h-screen text-white">
 
-<div class="container">
+    <!-- Navigation -->
+    <nav class="bg-slate-900/80 backdrop-blur-md border-b border-white/10 px-6 py-5 flex justify-between items-center">
 
-<div class="top">
+        <div class="flex items-center gap-3">
 
-<div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center text-2xl">
+                🍱
+            </div>
 
-<h1>🍱 Food Saver</h1>
+            <div>
+                <h2 class="text-xl font-semibold">
+                    Food Saver
+                </h2>
 
-<p>Admin Dashboard</p>
+                <p class="text-xs text-slate-400">
+                    Logistics Platform
+                </p>
+            </div>
 
-</div>
+        </div>
 
-<div class="count">
+        <h1 class="font-serif text-4xl font-bold">
+            Admin Dashboard
+        </h1>
 
-Total Donations: {{ donations|length }}
+    </nav>
 
-</div>
+    <!-- Content -->
+    <div class="max-w-7xl mx-auto px-6 py-10">
 
-</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-<div class="table-box">
+            {% for d in donations %}
 
-<table>
+            <div class="bg-slate-900/60 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
 
-<tr>
+                <!-- Header -->
+                <div class="flex justify-between items-center p-5 border-b border-white/10">
 
-<th>Name</th>
-<th>Food</th>
-<th>Quantity</th>
-<th>Address</th>
+                    <h2 class="text-emerald-400 font-bold text-lg">
+                        ID: {{ d[0] }}
+                    </h2>
 
-</tr>
+                    {% if d[5] == "Delivered" %}
 
-{% for item in donations %}
+                    <span class="bg-emerald-500/20 text-emerald-300 px-4 py-1 rounded-full text-sm font-medium">
+                        Delivered
+                    </span>
 
-<tr>
+                    {% elif d[5] == "Picked" %}
 
-<td>{{ item.name }}</td>
-<td>{{ item.food }}</td>
-<td>{{ item.quantity }}</td>
-<td>{{ item.address }}</td>
+                    <span class="bg-blue-500/20 text-blue-300 px-4 py-1 rounded-full text-sm font-medium">
+                        Picked
+                    </span>
 
-</tr>
+                    {% else %}
 
-{% endfor %}
+                    <span class="bg-amber-500/20 text-amber-300 px-4 py-1 rounded-full text-sm font-medium">
+                        Pending
+                    </span>
 
-</table>
+                    {% endif %}
 
-</div>
+                </div>
 
-<div class="footer">
+                <!-- Details -->
+                <div class="p-5 space-y-4">
 
-© 2026 Food Saver – Share Food, Share Hope
+                    <div class="flex items-center gap-2 text-slate-300">
 
-</div>
+                        <span>👤</span>
 
-</div>
+                        <span class="text-sm break-all">
+                            {{ d[1] }}
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <span class="font-semibold text-white">
+                            Food:
+                        </span>
+
+                        <span class="text-slate-300">
+                            {{ d[2] }}
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <span class="font-semibold text-white">
+                            Qty:
+                        </span>
+
+                        <span class="text-slate-300">
+                            {{ d[3] }}
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <span class="font-semibold text-white">
+                            Location:
+                        </span>
+
+                        <span class="text-slate-300">
+                            {{ d[4] }}
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <span class="font-semibold text-white">
+                            Delivery:
+                        </span>
+
+                        <span class="text-emerald-400 font-medium">
+                            {{ d[6] if d[6] else "Not Assigned" }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- Actions -->
+                <div class="px-5 pb-5 space-y-4">
+
+                    <!-- Status Buttons -->
+                    <div class="flex gap-3">
+
+                        <a href="/update_status/{{ d[0] }}/Picked"
+                           class="flex-1 text-center bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 py-2 rounded-full transition duration-200 hover:scale-105">
+
+                            Picked
+
+                        </a>
+
+                        <a href="/update_status/{{ d[0] }}/Delivered"
+                           class="flex-1 text-center bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 py-2 rounded-full transition duration-200 hover:scale-105">
+
+                            Delivered
+
+                        </a>
+
+                    </div>
+
+                    <!-- Assign Delivery -->
+                    <form action="/assign_delivery/{{ d[0] }}"
+                          method="POST"
+                          class="flex gap-2">
+
+                        <input type="text"
+                               name="delivery_boy"
+                               placeholder="Delivery Person"
+                               required
+                               class="flex-1 bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400">
+
+                        <button type="submit"
+                                class="bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-semibold px-5 rounded-xl transition duration-200 hover:scale-105">
+
+                            Assign
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
 
 </body>
 </html>

@@ -1,40 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-body{font-family:Arial;background:#e8f5e9}
-.box{
-    width:90%;
-    max-width:400px;
-    margin:auto;
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    margin-top:40px;
-}
-input,button{
-    width:100%;
-    padding:10px;
-    margin:8px 0;
-}
-button{background:green;color:white;border:none}
-</style>
-</head>
+<head><title>User Dashboard</title></head>
 
-<body>
+<body style="font-family:Arial;">
 
-<div class="box">
-<h2>🍲 Donate Food</h2>
+{% include 'navbar.html' %}
 
-<form action="/submit" method="POST">
-<input name="name" placeholder="Name">
-<input name="food" placeholder="Food">
-<input name="quantity" placeholder="Quantity">
-<button>Submit</button>
-</form>
+<h2>User Dashboard</h2>
 
-<a href="/logout">Logout</a>
-</div>
+<p>Available Donations</p>
+
+{% for d in donations %}
+    <div style="padding:10px; border:1px solid #ccc; margin:10px;">
+        <b>{{ d.food_name }}</b> - {{ d.status }}
+    </div>
+{% endfor %}
+
+<br>
+
+<a href="{{ url_for('donate_food') }}">Donate Food</a>
 
 </body>
 </html>

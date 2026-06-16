@@ -1,114 +1,181 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Register</title>
-
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Saver | Register</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                darkbg: '#12181b',
+                glass: '#1e252b',
+                mint: '#6ee7b7',
+                emeraldStart: '#34d399',
+                emeraldEnd: '#10b981'
+            },
+            fontFamily: {
+                serif: ['Cormorant Garamond', 'serif'],
+                sans: ['Poppins', 'sans-serif']
+            }
+        }
+    }
+}
+</script>
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
 body{
-
-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-background:linear-gradient(135deg,#43cea2,#185a9d);
+    font-family:'Poppins',sans-serif;
+    background:#12181b;
+    overflow:hidden;
 }
 
-.card{
-
-width:350px;
-
-padding:40px;
-
-border-radius:25px;
-
-background:rgba(255,255,255,0.15);
-
-backdrop-filter:blur(15px);
-
-color:white;
-
-box-shadow:0 8px 32px rgba(0,0,0,0.2);
+/* Decorative background */
+.bg-blur1{
+    position:absolute;
+    width:350px;
+    height:350px;
+    background:rgba(16,185,129,0.15);
+    filter:blur(120px);
+    top:-80px;
+    left:-80px;
 }
 
-h1{
-
-text-align:center;
-
-margin-bottom:25px;
+.bg-blur2{
+    position:absolute;
+    width:300px;
+    height:300px;
+    background:rgba(110,231,183,0.12);
+    filter:blur(100px);
+    bottom:-60px;
+    right:-60px;
 }
 
-input{
-
-width:100%;
-
-padding:14px;
-
-margin-top:15px;
-
-border:none;
-
-outline:none;
-
-border-radius:12px;
+.glass-card{
+    background:rgba(30,37,43,0.75);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.08);
 }
 
-button{
-
-width:100%;
-
-padding:14px;
-
-margin-top:20px;
-
-border:none;
-
-border-radius:12px;
-
-background:white;
-
-color:#185a9d;
-
-font-weight:600;
-
-cursor:pointer;
+.input-field{
+    width:100%;
+    padding:14px 16px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.08);
+    color:white;
+    outline:none;
+    transition:all 0.3s ease;
 }
 
+.input-field::placeholder{
+    color:#9ca3af;
+}
+
+.input-field:focus{
+    border-color:#6ee7b7;
+    box-shadow:0 0 0 3px rgba(110,231,183,0.12);
+}
+
+.register-btn{
+    background:linear-gradient(135deg,#6ee7b7,#10b981);
+    color:#12181b;
+    transition:all 0.3s ease;
+}
+
+.register-btn:hover{
+    transform:scale(1.02);
+}
 </style>
 
 </head>
 
-<body>
+<body class="min-h-screen flex items-center justify-center px-6">
 
-<div class="card">
+<div class="bg-blur1"></div>
+<div class="bg-blur2"></div>
 
-<h1>📝 Register</h1>
+<div class="glass-card relative w-full max-w-md rounded-3xl p-10 shadow-2xl">
 
-<form method="POST">
+    <!-- Header -->
+    <div class="flex items-center justify-center gap-3 mb-8">
 
-<input type="text" name="username" placeholder="Username" required>
+        <div class="text-3xl">
+            📝
+        </div>
 
-<input type="password" name="password" placeholder="Password" required>
+        <h1 class="font-serif text-5xl font-bold text-white">
+            Register
+        </h1>
 
-<button type="submit">Create Account</button>
+    </div>
 
-</form>
+    <!-- Form -->
+    <form method="POST" class="space-y-5">
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Enter your name"
+            required
+            class="input-field"
+        >
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            class="input-field"
+        >
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Create password"
+            required
+            class="input-field"
+        >
+
+        <input
+            type="password"
+            name="confirm_password"
+            placeholder="Confirm password"
+            required
+            class="input-field"
+        >
+
+        <button
+            type="submit"
+            class="register-btn w-full py-4 rounded-2xl font-semibold text-lg shadow-lg"
+        >
+            Create Account
+        </button>
+
+    </form>
+
+    <!-- Footer -->
+    <div class="text-center mt-8">
+
+        <span class="text-gray-400">
+            Already have an account?
+        </span>
+
+        <a
+            href="/user_login"
+            class="text-mint font-semibold hover:underline ml-1"
+        >
+            Login
+        </a>
+
+    </div>
 
 </div>
 

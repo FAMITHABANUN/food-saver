@@ -1,93 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<title>Delivery Dashboard</title>
-
-<style>
-
-body{
-font-family:Arial,sans-serif;
-background:#f4f6f9;
-padding:20px;
-}
-
-h1{
-text-align:center;
-color:#2c3e50;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-background:white;
-margin-top:20px;
-}
-
-th{
-background:#27ae60;
-color:white;
-padding:12px;
-}
-
-td{
-padding:12px;
-border:1px solid #ddd;
-text-align:center;
-}
-
-tr:nth-child(even){
-background:#f9f9f9;
-}
-
-.status{
-font-weight:bold;
-color:#e67e22;
-}
-
-</style>
-
+<title>Admin Dashboard</title>
 </head>
 
-<body>
+<body style="background:#0f172a;color:white;font-family:Poppins;">
 
-<h1>FoodSaver Delivery Dashboard</h1>
+<h2 style="text-align:center;">Admin Dashboard</h2>
 
-<table>
+{% for d in donations %}
 
-<tr>
-<th>Donor</th>
-<th>Food</th>
-<th>Quantity</th>
-<th>Address</th>
-<th>Status</th>
-<th>Delivery Person</th>
-<th>Pickup Time</th>
-</tr>
+<div style="margin:10px;background:#1e293b;padding:15px;border-radius:10px;">
 
-{% for donation in donations %}
+<p>User: {{d[1]}}</p>
+<p>Food: {{d[2]}}</p>
+<p>Status: {{d[5]}}</p>
+<p>Delivery: {{d[6]}}</p>
 
-<tr>
+<a href="/update_status/{{d[0]}}/Picked"><button>Picked</button></a>
+<a href="/update_status/{{d[0]}}/Delivered"><button>Delivered</button></a>
 
-<td>{{ donation.name }}</td>
+<form method="POST" action="/assign_delivery/{{d[0]}}">
+<input name="delivery_boy" placeholder="Assign Delivery Person">
+<button>Assign</button>
+</form>
 
-<td>{{ donation.food }}</td>
+<a target="_blank"
+href="https://www.google.com/maps/search/?api=1&query={{d[4]}}">
+📍 Map
+</a>
 
-<td>{{ donation.quantity }}</td>
-
-<td>{{ donation.address }}</td>
-
-<td class="status">{{ donation.status }}</td>
-
-<td>{{ donation.delivery_person }}</td>
-
-<td>{{ donation.pickup_time }}</td>
-
-</tr>
+</div>
 
 {% endfor %}
-
-</table>
 
 </body>
 </html>

@@ -1,89 +1,236 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Track Donation</title>
+<title>Food Saver | Live Donation Tracking</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            fontFamily: {
+                serif: ['Cormorant Garamond', 'serif'],
+                sans: ['Poppins', 'sans-serif']
+            }
+        }
+    }
+}
+</script>
 
 <style>
-
 body{
-font-family:Arial,sans-serif;
-background:#ecf0f1;
-padding:30px;
+    font-family:'Poppins',sans-serif;
 }
-
-h1{
-text-align:center;
-color:#2c3e50;
-margin-bottom:30px;
-}
-
-.card{
-
-background:white;
-
-padding:20px;
-
-margin-bottom:20px;
-
-border-radius:10px;
-
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-.card h3{
-color:#27ae60;
-margin-bottom:10px;
-}
-
-.card p{
-margin:8px 0;
-}
-
-.status{
-
-font-weight:bold;
-
-color:#e67e22;
-}
-
 </style>
 
 </head>
 
-<body>
+<body class="min-h-screen bg-gradient-to-br from-[#111c17] to-[#0e1612] text-white">
 
-<h1>Track Food Donations</h1>
+    <!-- Header -->
+    <div class="text-center py-10">
 
-{% for donation in donations %}
+        <h1 class="font-serif text-4xl md:text-5xl font-bold">
+            📌 Live Donation Tracking
+        </h1>
 
-<div class="card">
+    </div>
 
-<h3>{{ donation.food }}</h3>
+    <!-- Tracking Cards -->
+    <div class="max-w-6xl mx-auto px-6 pb-10 space-y-8">
 
-<p><b>Donor:</b> {{ donation.name }}</p>
+        {% for d in donations %}
 
-<p><b>Quantity:</b> {{ donation.quantity }}</p>
+        <div class="bg-[#14211a] border border-emerald-500/20 rounded-3xl overflow-hidden shadow-2xl">
 
-<p><b>Address:</b> {{ donation.address }}</p>
+            <!-- Details -->
+            <div class="p-8">
 
-<p><b>Status:</b>
-<span class="status">
-{{ donation.status }}
-</span>
-</p>
+                <!-- Food -->
+                <div class="flex items-center gap-3 mb-6">
 
-<p><b>Delivery Person:</b>
-{{ donation.delivery_person }}
-</p>
+                    <span class="text-3xl">
+                        🍲
+                    </span>
 
-<p><b>Pickup Time:</b>
-{{ donation.pickup_time }}
-</p>
+                    <h2 class="text-3xl font-semibold">
 
-</div>
+                        {{ d[2] }}
 
-{% endfor %}
+                    </h2>
+
+                </div>
+
+                <!-- Metadata -->
+                <div class="space-y-3 text-lg">
+
+                    <div>
+
+                        <span class="font-semibold text-white">
+                            Quantity:
+                        </span>
+
+                        <span class="text-slate-300">
+                            {{ d[3] }}
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <span class="font-semibold text-white">
+                            Delivery:
+                        </span>
+
+                        <span class="text-slate-300">
+
+                            {% if d[6] %}
+                                {{ d[6] }}
+                            {% else %}
+                                Not Assigned
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- Status -->
+                <div class="mt-6">
+
+                    {% if d[5] == "Delivered" %}
+
+                    <span class="inline-block px-5 py-2 rounded-full bg-emerald-500/20 text-emerald-300 font-medium">
+                        Delivered
+                    </span>
+
+                    {% elif d[5] == "Picked" %}
+
+                    <span class="inline-block px-5 py-2 rounded-full bg-blue-500/20 text-blue-300 font-medium">
+                        Picked
+                    </span>
+
+                    {% else %}
+
+                    <span class="inline-block px-5 py-2 rounded-full bg-amber-500/20 text-amber-300 font-medium">
+                        Pending
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <!-- Stepper -->
+            <div class="px-8 pb-8">
+
+                <div class="grid grid-cols-4 text-center text-sm text-slate-300 mb-6">
+
+                    <div class="{% if d[5]=='Pending' %}text-emerald-400 font-semibold{% endif %}">
+                        Pending
+                    </div>
+
+                    <div class="{% if d[5]=='Picked' %}text-emerald-400 font-semibold{% endif %}">
+                        Picked
+                    </div>
+
+                    <div class="{% if d[5]=='On the Way' %}text-emerald-400 font-semibold{% endif %}">
+                        On the Way
+                    </div>
+
+                    <div class="{% if d[5]=='Delivered' %}text-emerald-400 font-semibold{% endif %}">
+                        Delivered
+                    </div>
+
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full h-2 bg-slate-700 rounded-full mb-8 overflow-hidden">
+
+                    {% if d[5] == "Pending" %}
+
+                    <div class="w-1/4 h-full bg-emerald-400 rounded-full"></div>
+
+                    {% elif d[5] == "Picked" %}
+
+                    <div class="w-2/4 h-full bg-emerald-400 rounded-full"></div>
+
+                    {% elif d[5] == "On the Way" %}
+
+                    <div class="w-3/4 h-full bg-emerald-400 rounded-full"></div>
+
+                    {% elif d[5] == "Delivered" %}
+
+                    <div class="w-full h-full bg-emerald-400 rounded-full"></div>
+
+                    {% endif %}
+
+                </div>
+
+                <!-- Map -->
+                <div class="relative rounded-2xl overflow-hidden border border-white/10">
+
+                    <!-- Open Maps Button -->
+                    <a href="https://www.google.com/maps?q={{ d[4] }}"
+                       target="_blank"
+                       class="absolute top-4 left-4 z-10 bg-white text-slate-900 px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 hover:scale-105 transition">
+
+                        Open in Maps
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-4 w-4"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M14 3h7m0 0v7m0-7L10 14"/>
+
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M5 5v14h14"/>
+
+                        </svg>
+
+                    </a>
+
+                    <!-- Embedded Map -->
+                    <iframe
+                        src="https://maps.google.com/maps?q={{ d[4] }}&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                        class="w-full h-72 border-0"
+                        loading="lazy">
+
+                    </iframe>
+
+                </div>
+
+                <!-- Full Map Button -->
+                <a href="https://www.google.com/maps?q={{ d[4] }}"
+                   target="_blank"
+                   class="mt-6 block w-full text-center bg-emerald-400 text-slate-900 font-bold py-4 rounded-2xl hover:scale-[1.02] transition duration-200">
+
+                    Open Full Map
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
 
 </body>
 </html>

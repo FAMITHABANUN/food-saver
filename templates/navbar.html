@@ -1,0 +1,24 @@
+<div style="
+    background: linear-gradient(90deg,#0f172a,#111827);
+    padding:15px;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:Arial;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3);
+">
+
+    <div style="font-size:20px; font-weight:bold;">
+        🍱 FoodSaver
+    </div>
+
+    <div>
+        <a href="{{ url_for('home') }}" style="color:white; margin:10px; text-decoration:none;">Home</a>
+        <a href="{{ url_for('user_register') }}" style="color:white; margin:10px; text-decoration:none;">Register</a>
+        <a href="{{ url_for('user_login') }}" style="color:white; margin:10px; text-decoration:none;">Login</a>
+        <a href="{{ url_for('admin_login') }}" style="color:white; margin:10px; text-decoration:none;">Admin</a>
+        <a href="{{ url_for('track_donation') }}" style="color:white; margin:10px; text-decoration:none;">Track</a>
+    </div>
+
+</div>

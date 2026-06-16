@@ -1,135 +1,130 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Saver | Donate Food</title>
 
-<title>Donate Food</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
 
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-
-min-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-background:linear-gradient(135deg,#00b09b,#96c93d);
-}
-
-.card{
-
-width:380px;
-
-padding:40px;
-
-border-radius:25px;
-
-background:rgba(255,255,255,0.15);
-
-backdrop-filter:blur(15px);
-
-color:white;
-
-box-shadow:0 8px 32px rgba(0,0,0,0.2);
-}
-
-h1{
-
-text-align:center;
-
-margin-bottom:25px;
-}
-
-input,select{
-
-width:100%;
-
-padding:14px;
-
-margin-top:15px;
-
-border:none;
-
-outline:none;
-
-border-radius:12px;
-}
-
-button{
-
-width:100%;
-
-padding:14px;
-
-margin-top:20px;
-
-border:none;
-
-border-radius:12px;
-
-background:white;
-
-color:#00b09b;
-
-font-weight:600;
-
-cursor:pointer;
-
-transition:0.3s;
-}
-
-button:hover{
-
-transform:scale(1.03);
-}
-
-</style>
-
+        .serif-title {
+            font-family: 'Cormorant Garamond', serif;
+        }
+    </style>
 </head>
 
-<body>
+<body class="bg-gradient-to-br from-[#26c49f] to-[#229a82] min-h-screen flex items-center justify-center p-6">
 
-<div class="card">
+    <div class="bg-[#0e1a24] rounded-3xl shadow-2xl p-8 md:p-10 w-full max-w-lg">
 
-<h1>🍲 Donate Food</h1>
+        <!-- Header -->
+        <div class="flex items-center justify-center gap-3 mb-8">
+            <span class="text-4xl">🍲</span>
 
-<form method="POST">
+            <h1 class="serif-title text-4xl font-bold text-white">
+                Donate Food
+            </h1>
+        </div>
 
-<input type="text" name="name" placeholder="Your Name" required>
+        <!-- Donation Form -->
+        <form method="POST" class="space-y-5">
 
-<select name="food">
+            <!-- Food Name -->
+            <div>
+                <label class="block text-gray-300 mb-2">
+                    Food Name
+                </label>
 
-<option>Rice</option>
-<option>Bread</option>
-<option>Vegetables</option>
-<option>Fruits</option>
-<option>Meals</option>
+                <input
+                    type="text"
+                    name="food_name"
+                    placeholder="Food Name"
+                    required
+                    class="w-full bg-[#162a35] border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 outline-none"
+                >
+            </div>
 
-</select>
+            <!-- Quantity -->
+            <div>
+                <label class="block text-gray-300 mb-2">
+                    Quantity
+                </label>
 
-<input type="text" name="quantity" placeholder="Quantity" required>
+                <input
+                    type="text"
+                    name="quantity"
+                    placeholder="Quantity (e.g. 3 parcels)"
+                    required
+                    class="w-full bg-[#162a35] border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 outline-none"
+                >
+            </div>
 
-<input type="text" name="address" placeholder="Address" required>
+            <!-- Location -->
+            <div>
+                <label class="block text-gray-300 mb-2">
+                    Location
+                </label>
 
-<button type="submit">Submit Donation</button>
+                <input
+                    type="text"
+                    name="location"
+                    id="location"
+                    placeholder="Enter Location (e.g. Karur)"
+                    required
+                    class="w-full bg-[#162a35] border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 outline-none"
+                >
+            </div>
 
-</form>
+            <!-- Map -->
+            <div>
+                <label class="block text-gray-300 mb-2">
+                    Location Preview
+                </label>
 
-</div>
+                <iframe
+                    id="mapFrame"
+                    src="https://maps.google.com/maps?q=Karur&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                    class="w-full h-64 rounded-2xl border border-emerald-400"
+                    loading="lazy">
+                </iframe>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+                type="submit"
+                class="w-full bg-emerald-400 text-gray-900 font-bold py-4 rounded-full hover:scale-[1.02] duration-200 transition-transform"
+            >
+                Submit Donation
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- Update Map Based on Location -->
+    <script>
+        document.getElementById("location").addEventListener("input", function () {
+
+            let location = this.value.trim();
+
+            if (location !== "") {
+
+                document.getElementById("mapFrame").src =
+                    "https://maps.google.com/maps?q=" +
+                    encodeURIComponent(location) +
+                    "&t=&z=13&ie=UTF8&iwloc=&output=embed";
+            }
+        });
+    </script>
 
 </body>
 </html>

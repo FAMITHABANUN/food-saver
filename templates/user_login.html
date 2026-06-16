@@ -1,166 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Food Saver</title>
-
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Saver | User Login</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            fontFamily: {
+                serif: ['Cormorant Garamond', 'serif'],
+                sans: ['Poppins', 'sans-serif']
+            }
+        }
+    }
+}
+</script>
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
+body {
+    font-family: 'Poppins', sans-serif;
 }
-
-body{
-
-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-background:linear-gradient(135deg,#11998e,#38ef7d);
-
-overflow:hidden;
-}
-
-.card{
-
-width:350px;
-
-padding:40px;
-
-border-radius:25px;
-
-background:rgba(255,255,255,0.15);
-
-backdrop-filter:blur(15px);
-
-box-shadow:0 8px 32px rgba(0,0,0,0.2);
-
-text-align:center;
-
-color:white;
-}
-
-h1{
-
-font-size:32px;
-
-margin-bottom:10px;
-}
-
-p{
-
-margin-bottom:25px;
-
-font-size:14px;
-}
-
-input{
-
-width:100%;
-
-padding:14px;
-
-margin-top:15px;
-
-border:none;
-
-outline:none;
-
-border-radius:12px;
-
-font-size:15px;
-}
-
-button{
-
-width:100%;
-
-padding:14px;
-
-margin-top:20px;
-
-border:none;
-
-border-radius:12px;
-
-background:white;
-
-color:#11998e;
-
-font-size:16px;
-
-font-weight:600;
-
-cursor:pointer;
-
-transition:0.3s;
-}
-
-button:hover{
-
-transform:scale(1.03);
-}
-
-a{
-
-color:white;
-
-text-decoration:none;
-
-font-size:14px;
-}
-
-.links{
-
-margin-top:20px;
-
-display:flex;
-
-justify-content:space-between;
-}
-
 </style>
 
 </head>
 
-<body>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0d1b2a] via-[#152238] to-[#1b263b] px-6">
 
-<div class="card">
+    <!-- Background Glow Effects -->
+    <div class="absolute top-0 left-0 w-80 h-80 bg-emerald-500/10 blur-[120px] rounded-full"></div>
 
-<h1>🍱 Food Saver</h1>
+    <div class="absolute bottom-0 right-0 w-80 h-80 bg-blue-500/10 blur-[120px] rounded-full"></div>
 
-<p>Share Food, Share Hope</p>
+    <!-- Login Card -->
+    <div class="relative w-full max-w-md">
 
-<form method="POST">
+        <div class="bg-[#18222f]/80 backdrop-blur-md border border-white/10 shadow-2xl rounded-3xl p-10">
 
-<input type="text" name="username" placeholder="Username" required>
+            <!-- Header -->
+            <div class="flex items-center justify-center gap-3 mb-10">
 
-<input type="password" name="password" placeholder="Password" required>
+                <!-- Security Icon -->
+                <svg class="w-10 h-10 text-yellow-400"
+                     fill="currentColor"
+                     viewBox="0 0 24 24">
+                    <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm0 10a2 2 0 110-4 2 2 0 010 4zm3 5H9v-2h6v2z"/>
+                </svg>
 
-<button type="submit">Login</button>
+                <h1 class="font-serif text-5xl font-bold text-white">
+                    User Login
+                </h1>
 
-</form>
+            </div>
 
-<div class="links">
+            <!-- Login Form -->
+            <form method="POST" class="space-y-6">
 
-<a href="/register">Register</a>
+                <!-- Email -->
+                <div class="relative">
 
-<a href="/admin-login">Admin</a>
+                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
 
-</div>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
 
-</div>
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M16 12l-4 4-4-4m8-4l-4 4-4-4"/>
+
+                        </svg>
+
+                    </span>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter Email"
+                        required
+                        class="w-full bg-[#24313f]/70 border border-gray-600 text-white placeholder-gray-400 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition duration-300"
+                    >
+
+                </div>
+
+                <!-- Password -->
+                <div class="relative">
+
+                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M15 7a3 3 0 00-6 0v3H7a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2h-2V7z"/>
+
+                        </svg>
+
+                    </span>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter Password"
+                        required
+                        class="w-full bg-[#24313f]/70 border border-gray-600 text-white placeholder-gray-400 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition duration-300"
+                    >
+
+                </div>
+
+                <!-- Login Button -->
+                <button
+                    type="submit"
+                    class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-400 to-emerald-500 text-[#12181b] font-semibold text-lg shadow-lg hover:brightness-110 hover:scale-[1.02] transition duration-300"
+                >
+                    Login
+                </button>
+
+            </form>
+
+            <!-- Footer Links -->
+            <div class="text-center mt-8 space-y-2">
+
+                <p class="text-gray-400">
+                    Don't have an account?
+
+                    <a href="/user_register"
+                       class="text-emerald-400 hover:underline font-medium">
+                        Register
+                    </a>
+                </p>
+
+                <p>
+                    <a href="/admin_login"
+                       class="text-gray-400 hover:text-emerald-400 transition">
+                        Admin Login
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </body>
 </html>
