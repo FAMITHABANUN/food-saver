@@ -5,86 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Saver</title>
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        darkbg: '#12181b',
-                        emeraldStart: '#1e5631',
-                        emeraldEnd: '#2d8a4e',
-                        neon: '#6ee7b7'
-                    },
-                    fontFamily: {
-                        serif: ['Cormorant Garamond', 'serif'],
-                        sans: ['Poppins', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
         body {
-            background: #12181b;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(110, 231, 183, 0.15);
-        }
-
-        .hero-pattern {
-            background-image:
-                radial-gradient(circle at 25% 25%, rgba(255,255,255,0.08) 2px, transparent 2px),
-                radial-gradient(circle at 75% 75%, rgba(255,255,255,0.05) 2px, transparent 2px);
-            background-size: 60px 60px;
+        .serif-title {
+            font-family: 'Cormorant Garamond', serif;
         }
     </style>
 </head>
 
-<body class="text-white font-sans">
+<body class="bg-[#12181b] text-white min-h-screen">
 
     <!-- Navigation -->
-    <nav class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+    <nav class="flex flex-col md:flex-row justify-between items-center px-8 py-6">
 
-        <div class="flex items-center gap-3">
-            <div class="text-3xl">🫶</div>
+        <div class="flex items-center gap-3 mb-4 md:mb-0">
+            <span class="text-3xl">🍱</span>
 
-            <div>
-                <h1 class="text-2xl font-bold">
-                    Food Saver
-                </h1>
-            </div>
+            <h1 class="serif-title text-4xl font-bold">
+                Food Saver
+            </h1>
         </div>
 
-        <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <div class="flex flex-wrap justify-center gap-6 font-medium">
 
-            <a href="/user_login"
-               class="hover:text-neon transition duration-300">
-                User
+            <a href="{{ url_for('user_login') }}"
+               class="hover:text-emerald-400 transition">
+                User Login
             </a>
 
-            <a href="/user_register"
-               class="hover:text-neon transition duration-300">
+            <a href="{{ url_for('user_register') }}"
+               class="hover:text-emerald-400 transition">
                 Register
             </a>
 
-            <a href="/admin_login"
-               class="hover:text-neon transition duration-300">
+            <a href="{{ url_for('admin_login') }}"
+               class="hover:text-emerald-400 transition">
                 Admin
             </a>
 
-            <a href="/track_donation"
-               class="hover:text-neon transition duration-300">
+            <a href="{{ url_for('track_donation') }}"
+               class="hover:text-emerald-400 transition">
                 Track
             </a>
 
@@ -93,23 +60,29 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="mx-6 md:mx-10 rounded-3xl overflow-hidden hero-pattern"
-             style="background: linear-gradient(135deg, #1e5631, #2d8a4e);">
+    <section class="mx-6 md:mx-12 mt-4 rounded-3xl bg-gradient-to-r from-[#1e5631] to-[#2d8a4e] py-20 px-8 text-center shadow-2xl">
 
-        <div class="max-w-5xl mx-auto text-center py-24 px-6">
+        <h1 class="serif-title text-5xl md:text-6xl font-bold mb-4">
+            Food Saver
+        </h1>
 
-            <h1 class="font-serif text-6xl md:text-7xl font-bold mb-4">
-                Food Saver
-            </h1>
+        <p class="text-lg md:text-xl mb-10">
+            Share Food, Share Hope
+        </p>
 
-            <p class="text-lg md:text-xl text-emerald-50 mb-10">
-                Share Food, Share Hope
-            </p>
+        <div class="flex flex-col md:flex-row justify-center gap-4">
 
-            <a href="/user_login"
-               class="inline-block px-8 py-4 rounded-full bg-white text-emerald-700 font-semibold shadow-2xl hover:scale-105 transition duration-300">
+            <a href="{{ url_for('user_login') }}"
+               class="bg-white text-emerald-700 px-8 py-4 rounded-full font-semibold shadow-lg hover:scale-105 transition">
 
                 Get Started
+
+            </a>
+
+            <a href="{{ url_for('admin_login') }}"
+               class="border border-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-emerald-700 transition">
+
+                Admin Panel
 
             </a>
 
@@ -118,57 +91,58 @@
     </section>
 
     <!-- Features -->
-    <section class="max-w-7xl mx-auto px-6 py-20">
+    <section class="px-6 md:px-12 py-16">
+
+        <h2 class="text-4xl serif-title text-center mb-12">
+            Our Features
+        </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-            <!-- Card 1 -->
-            <div class="glass-card rounded-3xl p-8 hover:scale-105 transition duration-300">
+            <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:scale-105 transition">
 
-                <div class="text-5xl mb-6">
-                    🔐
+                <div class="text-5xl mb-4">
+                    👤
                 </div>
 
-                <h3 class="text-2xl font-semibold mb-4">
+                <h3 class="text-2xl font-semibold mb-3">
                     Secure User Login
                 </h3>
 
-                <p class="text-gray-300 leading-relaxed">
-                    Control your account and view your impact.
+                <p class="text-gray-300">
+                    Users can securely register and log in to donate food through the platform.
                 </p>
 
             </div>
 
-            <!-- Card 2 -->
-            <div class="glass-card rounded-3xl p-8 hover:scale-105 transition duration-300">
+            <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:scale-105 transition">
 
-                <div class="text-5xl mb-6">
-                    🧺
+                <div class="text-5xl mb-4">
+                    🍲
                 </div>
 
-                <h3 class="text-2xl font-semibold mb-4">
-                    Easy Food Donation
+                <h3 class="text-2xl font-semibold mb-3">
+                    Food Donation
                 </h3>
 
-                <p class="text-gray-300 leading-relaxed">
-                    Donate excess food from home, business, or event with simple scheduling.
+                <p class="text-gray-300">
+                    Submit food donation details including food type, quantity and address information.
                 </p>
 
             </div>
 
-            <!-- Card 3 -->
-            <div class="glass-card rounded-3xl p-8 hover:scale-105 transition duration-300">
+            <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:scale-105 transition">
 
-                <div class="text-5xl mb-6">
+                <div class="text-5xl mb-4">
                     📊
                 </div>
 
-                <h3 class="text-2xl font-semibold mb-4">
-                    Centralized Admin Panel
+                <h3 class="text-2xl font-semibold mb-3">
+                    Admin Dashboard
                 </h3>
 
-                <p class="text-gray-300 leading-relaxed">
-                    Manage global donations, tracks, and logistics.
+                <p class="text-gray-300">
+                    Administrators can monitor and manage donated food details efficiently.
                 </p>
 
             </div>
@@ -178,20 +152,26 @@
     </section>
 
     <!-- Statistics -->
-    <section class="pb-20 px-6">
+    <section class="pb-16">
 
-        <div class="max-w-5xl mx-auto flex flex-wrap justify-center gap-6">
+        <div class="flex flex-col md:flex-row justify-center items-center gap-6 px-6">
 
-            <div class="px-6 py-3 rounded-full border border-neon/40 shadow-[0_0_20px_rgba(110,231,183,0.2)]">
-                🤝 100+ Secure Donations
+            <div class="border border-emerald-400 rounded-full px-8 py-4 shadow-lg shadow-emerald-500/20">
+
+                🤝 100+ Food Donations
+
             </div>
 
-            <div class="px-6 py-3 rounded-full border border-neon/40 shadow-[0_0_20px_rgba(110,231,183,0.2)]">
-                👥 50+ Community Users
+            <div class="border border-emerald-400 rounded-full px-8 py-4 shadow-lg shadow-emerald-500/20">
+
+                👥 50+ Registered Users
+
             </div>
 
-            <div class="px-6 py-3 rounded-full border border-neon/40 shadow-[0_0_20px_rgba(110,231,183,0.2)]">
-                🎧 24/7 Priority Support
+            <div class="border border-emerald-400 rounded-full px-8 py-4 shadow-lg shadow-emerald-500/20">
+
+                🎧 24/7 Support System
+
             </div>
 
         </div>
@@ -199,14 +179,14 @@
     </section>
 
     <!-- Footer -->
-    <footer class="text-center text-gray-400 text-sm pb-8">
+    <footer class="text-center text-gray-400 py-8 border-t border-white/10">
 
         <p>
-            © 2026 Food Saver — Share Food, Share Hope
+            © 2026 Food Saver – Share Food, Share Hope
         </p>
 
-        <p class="mt-2">
-            Built using Flask, HTML and Tailwind CSS
+        <p class="mt-2 text-sm">
+            Built using Flask, HTML and CSS
         </p>
 
     </footer>

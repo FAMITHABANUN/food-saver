@@ -1,214 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Food Saver | Admin Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Saver | Admin Dashboard</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-<script>
-tailwind.config = {
-    theme: {
-        extend: {
-            fontFamily: {
-                serif: ['Cormorant Garamond', 'serif'],
-                sans: ['Poppins', 'sans-serif']
-            }
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
         }
-    }
-}
-</script>
 
-<style>
-body{
-    font-family:'Poppins',sans-serif;
-}
-</style>
-
+        .serif-title {
+            font-family: 'Cormorant Garamond', serif;
+        }
+    </style>
 </head>
 
-<body class="bg-gradient-to-br from-[#0f172a] to-[#1e293b] min-h-screen text-white">
+<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen p-6">
 
-    <!-- Navigation -->
-    <nav class="bg-slate-900/80 backdrop-blur-md border-b border-white/10 px-6 py-5 flex justify-between items-center">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-center mb-10">
 
         <div class="flex items-center gap-3">
+            <div class="text-4xl">📊</div>
 
-            <div class="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center text-2xl">
-                🍱
-            </div>
+            <h1 class="serif-title text-4xl text-white font-bold">
+                Admin Dashboard
+            </h1>
+        </div>
 
-            <div>
-                <h2 class="text-xl font-semibold">
-                    Food Saver
+        <div class="mt-4 md:mt-0 flex gap-3">
+
+            <a href="{{ url_for('home') }}"
+               class="bg-emerald-500 text-slate-900 font-semibold px-5 py-3 rounded-xl hover:scale-105 transition duration-200">
+
+                ⬅ Back to Home
+
+            </a>
+
+            <a href="{{ url_for('logout') }}"
+               class="bg-red-500 text-white font-semibold px-5 py-3 rounded-xl hover:scale-105 transition duration-200">
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        {% for d in donations %}
+
+        <div class="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-6">
+
+            <!-- Card Header -->
+            <div class="flex justify-between items-center mb-5">
+
+                <h2 class="text-xl font-bold text-emerald-400">
+                    ID: {{ d[0] }}
                 </h2>
 
-                <p class="text-xs text-slate-400">
-                    Logistics Platform
+                {% if d[5] == "Delivered" %}
+                    <span class="bg-green-500/20 text-green-400 px-4 py-1 rounded-full text-sm">
+                        {{ d[5] }}
+                    </span>
+
+                {% elif d[5] == "Picked" %}
+                    <span class="bg-yellow-500/20 text-yellow-400 px-4 py-1 rounded-full text-sm">
+                        {{ d[5] }}
+                    </span>
+
+                {% else %}
+                    <span class="bg-blue-500/20 text-blue-400 px-4 py-1 rounded-full text-sm">
+                        {{ d[5] }}
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+            <!-- Donation Details -->
+            <div class="space-y-3 text-gray-300">
+
+                <p>
+                    👤 <strong>User:</strong>
+                    {{ d[1] }}
                 </p>
-            </div>
 
-        </div>
+                <p>
+                    🍲 <strong>Food:</strong>
+                    {{ d[2] }}
+                </p>
 
-        <h1 class="font-serif text-4xl font-bold">
-            Admin Dashboard
-        </h1>
+                <p>
+                    📦 <strong>Quantity:</strong>
+                    {{ d[3] }}
+                </p>
 
-    </nav>
+                <p>
+                    📍 <strong>Location:</strong>
+                    {{ d[4] }}
+                </p>
 
-    <!-- Content -->
-    <div class="max-w-7xl mx-auto px-6 py-10">
+                <p>
+                    🚚 <strong>Delivery:</strong>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            {% for d in donations %}
-
-            <div class="bg-slate-900/60 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
-
-                <!-- Header -->
-                <div class="flex justify-between items-center p-5 border-b border-white/10">
-
-                    <h2 class="text-emerald-400 font-bold text-lg">
-                        ID: {{ d[0] }}
-                    </h2>
-
-                    {% if d[5] == "Delivered" %}
-
-                    <span class="bg-emerald-500/20 text-emerald-300 px-4 py-1 rounded-full text-sm font-medium">
-                        Delivered
-                    </span>
-
-                    {% elif d[5] == "Picked" %}
-
-                    <span class="bg-blue-500/20 text-blue-300 px-4 py-1 rounded-full text-sm font-medium">
-                        Picked
-                    </span>
-
+                    {% if d[6] %}
+                        {{ d[6] }}
                     {% else %}
-
-                    <span class="bg-amber-500/20 text-amber-300 px-4 py-1 rounded-full text-sm font-medium">
-                        Pending
-                    </span>
-
+                        Not Assigned
                     {% endif %}
-
-                </div>
-
-                <!-- Details -->
-                <div class="p-5 space-y-4">
-
-                    <div class="flex items-center gap-2 text-slate-300">
-
-                        <span>👤</span>
-
-                        <span class="text-sm break-all">
-                            {{ d[1] }}
-                        </span>
-
-                    </div>
-
-                    <div>
-
-                        <span class="font-semibold text-white">
-                            Food:
-                        </span>
-
-                        <span class="text-slate-300">
-                            {{ d[2] }}
-                        </span>
-
-                    </div>
-
-                    <div>
-
-                        <span class="font-semibold text-white">
-                            Qty:
-                        </span>
-
-                        <span class="text-slate-300">
-                            {{ d[3] }}
-                        </span>
-
-                    </div>
-
-                    <div>
-
-                        <span class="font-semibold text-white">
-                            Location:
-                        </span>
-
-                        <span class="text-slate-300">
-                            {{ d[4] }}
-                        </span>
-
-                    </div>
-
-                    <div>
-
-                        <span class="font-semibold text-white">
-                            Delivery:
-                        </span>
-
-                        <span class="text-emerald-400 font-medium">
-                            {{ d[6] if d[6] else "Not Assigned" }}
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <!-- Actions -->
-                <div class="px-5 pb-5 space-y-4">
-
-                    <!-- Status Buttons -->
-                    <div class="flex gap-3">
-
-                        <a href="/update_status/{{ d[0] }}/Picked"
-                           class="flex-1 text-center bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 py-2 rounded-full transition duration-200 hover:scale-105">
-
-                            Picked
-
-                        </a>
-
-                        <a href="/update_status/{{ d[0] }}/Delivered"
-                           class="flex-1 text-center bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 py-2 rounded-full transition duration-200 hover:scale-105">
-
-                            Delivered
-
-                        </a>
-
-                    </div>
-
-                    <!-- Assign Delivery -->
-                    <form action="/assign_delivery/{{ d[0] }}"
-                          method="POST"
-                          class="flex gap-2">
-
-                        <input type="text"
-                               name="delivery_boy"
-                               placeholder="Delivery Person"
-                               required
-                               class="flex-1 bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400">
-
-                        <button type="submit"
-                                class="bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-semibold px-5 rounded-xl transition duration-200 hover:scale-105">
-
-                            Assign
-
-                        </button>
-
-                    </form>
-
-                </div>
+                </p>
 
             </div>
 
-            {% endfor %}
+            <!-- Status Buttons -->
+            <div class="flex gap-3 mt-6">
+
+                <a href="/update_status/{{ d[0] }}/Picked"
+                   class="flex-1 text-center bg-yellow-500/20 text-yellow-300 py-2 rounded-xl hover:scale-105 transition">
+
+                    Picked
+
+                </a>
+
+                <a href="/update_status/{{ d[0] }}/Delivered"
+                   class="flex-1 text-center bg-green-500/20 text-green-300 py-2 rounded-xl hover:scale-105 transition">
+
+                    Delivered
+
+                </a>
+
+            </div>
+
+            <!-- Delivery Assignment -->
+            <form action="/assign_delivery/{{ d[0] }}"
+                  method="POST"
+                  class="flex gap-2 mt-5">
+
+                <input type="text"
+                       name="delivery_boy"
+                       placeholder="Delivery Person"
+                       required
+                       class="flex-1 bg-slate-800 border border-gray-600 rounded-xl px-4 py-2 text-white focus:border-emerald-400 outline-none">
+
+                <button type="submit"
+                        class="bg-emerald-500 text-slate-900 font-semibold px-5 rounded-xl hover:scale-105 transition">
+
+                    Assign
+
+                </button>
+
+            </form>
 
         </div>
+
+        {% endfor %}
 
     </div>
 
