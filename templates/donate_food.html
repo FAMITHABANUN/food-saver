@@ -5,123 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Saver | Donate Food</title>
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/static/style.css">
 
     <style>
         body {
             font-family: 'Poppins', sans-serif;
+            background-image: url("/static/1000128894.jpg");
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #ffffff;
         }
-
         .serif-title {
             font-family: 'Cormorant Garamond', serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 255, 255, 0.45);
         }
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-[#26c49f] to-[#229a82] min-h-screen flex items-center justify-center p-6">
+<body class="min-h-screen flex items-center justify-center p-6">
 
-    <div class="bg-[#0e1a24] rounded-3xl shadow-2xl p-8 md:p-10 w-full max-w-lg">
+    <div class="glass-card rounded-3xl shadow-2xl p-8 md:p-10 w-full max-w-xl">
 
-        <!-- Header -->
         <div class="flex items-center justify-center gap-3 mb-8">
             <span class="text-4xl">🍲</span>
-
-            <h1 class="serif-title text-4xl font-bold text-white">
+            <h1 class="serif-title text-4xl font-bold text-gray-800">
                 Donate Food
             </h1>
         </div>
 
-        <!-- Donation Form -->
-        <form method="POST" class="space-y-5">
+        <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6 shadow-none p-0 bg-transparent w-full mt-0">
+            
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-gray-800 text-left mb-1 font-semibold">Food Name</label>
+                    <input
+                        type="text"
+                        name="food_name"
+                        placeholder="Food Name"
+                        required
+                        class="w-full bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none margin-0 shadow-inner"
+                    >
+                </div>
 
-            <!-- Food Name -->
-            <div>
-                <label class="block text-gray-300 mb-2">
-                    Food Name
-                </label>
+                <div>
+                    <label class="block text-gray-800 text-left mb-1 font-semibold">Quantity</label>
+                    <input
+                        type="text"
+                        name="quantity"
+                        placeholder="Quantity (e.g. 3 parcels)"
+                        required
+                        class="w-full bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none margin-0 shadow-inner"
+                    >
+                </div>
 
-                <input
-                    type="text"
-                    name="food_name"
-                    placeholder="Food Name"
-                    required
-                    class="w-full bg-[#162a35] border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 outline-none"
+                <div>
+                    <label class="block text-gray-800 text-left mb-1 font-semibold">Location</label>
+                    <input
+                        type="text"
+                        name="location"
+                        id="location"
+                        placeholder="Enter Location (e.g. Karur)"
+                        required
+                        class="w-full bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none margin-0 shadow-inner"
+                    >
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-between">
+                <div>
+                    <label class="block text-gray-800 text-left mb-1 font-semibold">Location Preview</label>
+                    <iframe
+                        id="mapFrame"
+                        src="https://maps.google.com/maps?q=Karur&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                        class="w-full h-48 md:h-52 rounded-2xl border border-emerald-400 bg-white/50"
+                        loading="lazy">
+                    </iframe>
+                </div>
+
+                <button
+                    type="submit"
+                    class="w-full bg-emerald-500 text-white font-bold py-3.5 rounded-full hover:bg-emerald-600 hover:scale-[1.02] duration-200 transition-all mt-4 md:mt-0 shadow-md"
                 >
+                    Submit Donation
+                </button>
             </div>
-
-            <!-- Quantity -->
-            <div>
-                <label class="block text-gray-300 mb-2">
-                    Quantity
-                </label>
-
-                <input
-                    type="text"
-                    name="quantity"
-                    placeholder="Quantity (e.g. 3 parcels)"
-                    required
-                    class="w-full bg-[#162a35] border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 outline-none"
-                >
-            </div>
-
-            <!-- Location -->
-            <div>
-                <label class="block text-gray-300 mb-2">
-                    Location
-                </label>
-
-                <input
-                    type="text"
-                    name="location"
-                    id="location"
-                    placeholder="Enter Location (e.g. Karur)"
-                    required
-                    class="w-full bg-[#162a35] border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 outline-none"
-                >
-            </div>
-
-            <!-- Map -->
-            <div>
-                <label class="block text-gray-300 mb-2">
-                    Location Preview
-                </label>
-
-                <iframe
-                    id="mapFrame"
-                    src="https://maps.google.com/maps?q=Karur&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                    class="w-full h-64 rounded-2xl border border-emerald-400"
-                    loading="lazy">
-                </iframe>
-            </div>
-
-            <!-- Submit Button -->
-            <button
-                type="submit"
-                class="w-full bg-emerald-400 text-gray-900 font-bold py-4 rounded-full hover:scale-[1.02] duration-200 transition-transform"
-            >
-                Submit Donation
-            </button>
 
         </form>
 
     </div>
 
-    <!-- Update Map Based on Location -->
     <script>
         document.getElementById("location").addEventListener("input", function () {
-
             let location = this.value.trim();
-
             if (location !== "") {
-
                 document.getElementById("mapFrame").src =
-                    "https://maps.google.com/maps?q=" +
-                    encodeURIComponent(location) +
-                    "&t=&z=13&ie=UTF8&iwloc=&output=embed";
+                    "https://maps.google.com/maps?q=" + encodeURIComponent(location) + "&t=&z=14&ie=UTF8&iwloc=&output=embed";
             }
         });
     </script>

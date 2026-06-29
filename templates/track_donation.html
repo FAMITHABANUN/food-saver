@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Food Saver | Live Donation Tracking</title>
+<title>Food Saver | Track Donation</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght=700&family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
 
 <script>
 tailwind.config = {
@@ -24,213 +24,197 @@ tailwind.config = {
 </script>
 
 <style>
-body{
-    font-family:'Poppins',sans-serif;
+body {
+    font-family: 'Poppins', sans-serif;
 }
 </style>
 
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-[#111c17] to-[#0e1612] text-white">
+<body class="min-h-screen relative bg-center bg-no-repeat bg-cover bg-fixed bg-[#bceade]" 
+      style="background-image: url('/static/1000128904.jpg');">
 
-    <!-- Header -->
-    <div class="text-center py-10">
+    <div class="absolute inset-0 bg-slate-900/10 pointer-events-none z-0"></div>
 
-        <h1 class="font-serif text-4xl md:text-5xl font-bold">
-            📌 Live Donation Tracking
-        </h1>
+    <div class="relative z-10 max-w-3xl mx-auto px-6 py-10">
 
-    </div>
-
-    <!-- Tracking Cards -->
-    <div class="max-w-6xl mx-auto px-6 pb-10 space-y-8">
-
-        {% for d in donations %}
-
-        <div class="bg-[#14211a] border border-emerald-500/20 rounded-3xl overflow-hidden shadow-2xl">
-
-            <!-- Details -->
-            <div class="p-8">
-
-                <!-- Food -->
-                <div class="flex items-center gap-3 mb-6">
-
-                    <span class="text-3xl">
-                        🍲
-                    </span>
-
-                    <h2 class="text-3xl font-semibold">
-
-                        {{ d[2] }}
-
-                    </h2>
-
+        <div id="loginCard" class="max-w-md mx-auto mt-20 block">
+            <div class="bg-white/20 backdrop-blur-[12px] border border-white/60 rounded-[32px] p-8 md:p-10 shadow-[0_16px_36px_rgba(0,0,0,0.06)]">
+                
+                <div class="flex flex-col items-center justify-center text-center mb-6">
+                    <div class="bg-emerald-500/10 p-4 rounded-2xl border border-white/40 mb-3 text-3xl">
+                        🔐
+                    </div>
+                    <h1 class="font-serif text-3xl font-bold text-slate-800 tracking-wide">
+                        User Login Required
+                    </h1>
+                    <p class="text-xs text-slate-600 mt-1 font-light">Please log in to access your live tracking layout</p>
                 </div>
 
-                <!-- Metadata -->
-                <div class="space-y-3 text-lg">
-
+                <div class="space-y-4">
                     <div>
-
-                        <span class="font-semibold text-white">
-                            Quantity:
-                        </span>
-
-                        <span class="text-slate-300">
-                            {{ d[3] }}
-                        </span>
-
+                        <input
+                            type="email"
+                            id="userEmail"
+                            placeholder="Enter Registered Email"
+                            required
+                            class="w-full bg-white/50 backdrop-blur-sm border border-white/60 text-slate-800 placeholder-slate-500 rounded-xl py-3.5 px-5 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition duration-300 font-light text-sm shadow-sm"
+                        >
                     </div>
 
                     <div>
-
-                        <span class="font-semibold text-white">
-                            Delivery:
-                        </span>
-
-                        <span class="text-slate-300">
-
-                            {% if d[6] %}
-                                {{ d[6] }}
-                            {% else %}
-                                Not Assigned
-                            {% endif %}
-
-                        </span>
-
+                        <input
+                            type="password"
+                            id="userPassword"
+                            placeholder="Enter Password"
+                            required
+                            class="w-full bg-white/50 backdrop-blur-sm border border-white/60 text-slate-800 placeholder-slate-500 rounded-xl py-3.5 px-5 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition duration-300 font-light text-sm shadow-sm"
+                        >
                     </div>
 
-                </div>
-
-                <!-- Status -->
-                <div class="mt-6">
-
-                    {% if d[5] == "Delivered" %}
-
-                    <span class="inline-block px-5 py-2 rounded-full bg-emerald-500/20 text-emerald-300 font-medium">
-                        Delivered
-                    </span>
-
-                    {% elif d[5] == "Picked" %}
-
-                    <span class="inline-block px-5 py-2 rounded-full bg-blue-500/20 text-blue-300 font-medium">
-                        Picked
-                    </span>
-
-                    {% else %}
-
-                    <span class="inline-block px-5 py-2 rounded-full bg-amber-500/20 text-amber-300 font-medium">
-                        Pending
-                    </span>
-
-                    {% endif %}
-
+                    <button
+                        type="button"
+                        onclick="showTrackingDashboard()"
+                        class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-md shadow-md active:scale-[0.98] transition-all duration-200 uppercase tracking-wider mt-2"
+                    >
+                        Verify & Track
+                    </button>
                 </div>
 
             </div>
+        </div>
 
-            <!-- Stepper -->
-            <div class="px-8 pb-8">
 
-                <div class="grid grid-cols-4 text-center text-sm text-slate-300 mb-6">
+        <div id="trackingDashboard" class="hidden">
+            
+            <div class="text-center mb-8">
+                <h1 class="font-serif text-4xl md:text-5xl font-bold text-slate-800 drop-shadow-sm">
+                    📌 Live Donation Tracking
+                </h1>
+            </div>
 
-                    <div class="{% if d[5]=='Pending' %}text-emerald-400 font-semibold{% endif %}">
-                        Pending
+            <div class="space-y-8">
+                {% for d in donations %}
+                <div class="bg-white/20 backdrop-blur-[12px] border border-white/60 rounded-[32px] overflow-hidden shadow-[0_16px_36px_rgba(0,0,0,0.06)]">
+
+                    <div class="p-6 md:p-8">
+
+                        <div class="flex items-center gap-3 mb-6 border-b border-white/30 pb-4">
+                            <span class="text-3xl">🍲</span>
+                            <h2 class="text-2xl md:text-3xl font-bold text-slate-800">
+                                {{ d[2] }}
+                            </h2>
+                        </div>
+
+                        <div class="space-y-3 text-base md:text-lg">
+                            <div class="flex justify-between items-center bg-white/30 backdrop-blur-sm p-4 rounded-2xl border border-white/40">
+                                <span class="font-semibold text-slate-700">Quantity</span>
+                                <span class="text-slate-800 font-medium bg-white/50 px-3 py-1 rounded-xl shadow-sm border border-white/50">{{ d[3] }}</span>
+                            </div>
+
+                            <div class="flex justify-between items-center bg-white/30 backdrop-blur-sm p-4 rounded-2xl border border-white/40">
+                                <span class="font-semibold text-slate-700">Delivery Personnel</span>
+                                <span>
+                                    {% if d[6] %}
+                                        <span class="bg-white/60 px-3 py-1 rounded-xl border border-white/60 shadow-sm font-medium text-slate-800">{{ d[6] }}</span>
+                                    {% else %}
+                                        <span class="text-slate-500 italic font-light">Not Assigned Yet</span>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex justify-end">
+                            {% if d[5] == "Delivered" %}
+                            <span class="px-5 py-2 rounded-full bg-emerald-500/20 text-emerald-800 border border-emerald-400/40 font-bold text-sm shadow-sm">
+                                🟢 Delivered
+                            </span>
+                            {% elif d[5] == "Picked" %}
+                            <span class="px-5 py-2 rounded-full bg-blue-500/20 text-blue-800 border border-blue-400/40 font-bold text-sm shadow-sm">
+                                🔵 Picked
+                            </span>
+                            {% else %}
+                            <span class="px-5 py-2 rounded-full bg-amber-500/20 text-amber-800 border border-amber-400/40 font-bold text-sm shadow-sm">
+                                🟡 Pending
+                            </span>
+                            {% endif %}
+                        </div>
+
                     </div>
 
-                    <div class="{% if d[5]=='Picked' %}text-emerald-400 font-semibold{% endif %}">
-                        Picked
-                    </div>
+                    <div class="px-6 md:px-8 pb-8 bg-white/10 backdrop-blur-md pt-6 border-t border-white/30">
 
-                    <div class="{% if d[5]=='On the Way' %}text-emerald-400 font-semibold{% endif %}">
-                        On the Way
-                    </div>
+                        <div class="grid grid-cols-4 text-center text-xs md:text-sm text-slate-600 mb-3 tracking-wide font-medium">
+                            <div class="{% if d[5]=='Pending' %}text-emerald-700 font-extrabold{% endif %}">Pending</div>
+                            <div class="{% if d[5]=='Picked' %}text-emerald-700 font-extrabold{% endif %}">Picked</div>
+                            <div class="{% if d[5]=='On the Way' %}text-emerald-700 font-extrabold{% endif %}">On the Way</div>
+                            <div class="{% if d[5]=='Delivered' %}text-emerald-700 font-extrabold{% endif %}">Delivered</div>
+                        </div>
 
-                    <div class="{% if d[5]=='Delivered' %}text-emerald-400 font-semibold{% endif %}">
-                        Delivered
+                        <div class="w-full h-3 bg-white/40 border border-white/50 rounded-full mb-8 overflow-hidden p-[2px]">
+                            {% if d[5] == "Pending" %}
+                            <div class="w-1/4 h-full bg-emerald-500 rounded-full shadow-sm"></div>
+                            {% elif d[5] == "Picked" %}
+                            <div class="w-2/4 h-full bg-emerald-500 rounded-full shadow-sm"></div>
+                            {% elif d[5] == "On the Way" %}
+                            <div class="w-3/4 h-full bg-emerald-500 rounded-full shadow-sm"></div>
+                            {% elif d[5] == "Delivered" %}
+                            <div class="w-full h-full bg-emerald-500 rounded-full shadow-sm"></div>
+                            {% endif %}
+                        </div>
+
+                        <div class="relative rounded-2xl overflow-hidden border border-white/50 shadow-md bg-white">
+                            <a href="https://www.google.com/maps?q={{ d[4] }}"
+                               target="_blank"
+                               class="absolute top-3 left-3 z-10 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition active:scale-95 shadow-sm">
+                                Open in Maps
+                            </a>
+
+                            <iframe
+                                src="https://maps.google.com/maps?q={{ d[4] }}&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                                class="w-full h-64 border-0"
+                                loading="lazy">
+                            </iframe>
+                        </div>
+
+                        <a href="https://www.google.com/maps?q={{ d[4] }}"
+                           target="_blank"
+                           class="mt-5 block w-full text-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl shadow-md active:scale-[0.99] transition duration-150 tracking-wide text-sm uppercase">
+                            Open Full Map
+                        </a>
+
                     </div>
 
                 </div>
-
-                <!-- Progress Bar -->
-                <div class="w-full h-2 bg-slate-700 rounded-full mb-8 overflow-hidden">
-
-                    {% if d[5] == "Pending" %}
-
-                    <div class="w-1/4 h-full bg-emerald-400 rounded-full"></div>
-
-                    {% elif d[5] == "Picked" %}
-
-                    <div class="w-2/4 h-full bg-emerald-400 rounded-full"></div>
-
-                    {% elif d[5] == "On the Way" %}
-
-                    <div class="w-3/4 h-full bg-emerald-400 rounded-full"></div>
-
-                    {% elif d[5] == "Delivered" %}
-
-                    <div class="w-full h-full bg-emerald-400 rounded-full"></div>
-
-                    {% endif %}
-
+                {% else %}
+                <div class="text-center py-12 bg-white/20 backdrop-blur-sm border border-white/40 rounded-[32px] p-8 shadow-sm">
+                    <p class="text-slate-600 font-medium text-base">No active food donation packages running inside transit lines.</p>
                 </div>
-
-                <!-- Map -->
-                <div class="relative rounded-2xl overflow-hidden border border-white/10">
-
-                    <!-- Open Maps Button -->
-                    <a href="https://www.google.com/maps?q={{ d[4] }}"
-                       target="_blank"
-                       class="absolute top-4 left-4 z-10 bg-white text-slate-900 px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 hover:scale-105 transition">
-
-                        Open in Maps
-
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-4 w-4"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M14 3h7m0 0v7m0-7L10 14"/>
-
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M5 5v14h14"/>
-
-                        </svg>
-
-                    </a>
-
-                    <!-- Embedded Map -->
-                    <iframe
-                        src="https://maps.google.com/maps?q={{ d[4] }}&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                        class="w-full h-72 border-0"
-                        loading="lazy">
-
-                    </iframe>
-
-                </div>
-
-                <!-- Full Map Button -->
-                <a href="https://www.google.com/maps?q={{ d[4] }}"
-                   target="_blank"
-                   class="mt-6 block w-full text-center bg-emerald-400 text-slate-900 font-bold py-4 rounded-2xl hover:scale-[1.02] transition duration-200">
-
-                    Open Full Map
-
-                </a>
-
+                {% endfor %}
             </div>
 
         </div>
 
-        {% endfor %}
-
     </div>
+
+    <script>
+    function showTrackingDashboard() {
+        var emailInput = document.getElementById("userEmail").value.trim();
+        var passwordInput = document.getElementById("userPassword").value;
+
+        if (emailInput === "" || passwordInput === "") {
+            alert("Please enter both your registered email and password first.");
+            return;
+        }
+
+        // Seamless local UI panel transitions avoiding broken method requests entirely
+        document.getElementById("loginCard").classList.remove("block");
+        document.getElementById("loginCard").classList.add("hidden");
+        
+        document.getElementById("trackingDashboard").classList.remove("hidden");
+        document.getElementById("trackingDashboard").classList.add("block");
+    }
+    </script>
 
 </body>
 </html>
