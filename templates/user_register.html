@@ -2,67 +2,92 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Register</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Saver | Register</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
 body {
-    font-family: Poppins;
+    font-family: 'Poppins', sans-serif;
+
+    /* ✅ FIXED BACKGROUND */
     background-image: url("/static/1000128894.jpg");
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     min-height: 100vh;
 }
 
-.card {
-    background: rgba(255,255,255,0.25);
-    backdrop-filter: blur(10px);
-    padding: 25px;
-    border-radius: 20px;
-    width: 350px;
-    margin: auto;
-    margin-top: 100px;
+.glass-card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 2px solid rgba(255, 255, 255, 0.45);
+}
+
+.serif-title {
+    font-family: 'Cormorant Garamond', serif;
 }
 </style>
 </head>
 
-<body>
+<body class="flex items-center justify-center p-6">
 
-<div class="card">
+<div class="glass-card rounded-3xl shadow-2xl p-8 w-full max-w-md">
 
-<h2 class="text-center font-bold text-xl mb-4">Create Account</h2>
+    <h1 class="text-3xl font-bold text-center mb-6 serif-title">
+        Create Account 🌱
+    </h1>
 
-<form method="POST">
+    <form action="{{ url_for('user_register') }}" method="POST">
 
-<input type="text" name="name" placeholder="Name"
-class="w-full p-2 mb-3 border rounded" required>
+        <input type="text" name="name" placeholder="Full Name"
+            class="w-full p-3 mb-3 border rounded-lg" required>
 
-<input type="email" name="email" placeholder="Email"
-class="w-full p-2 mb-3 border rounded" required>
+        <input type="email" name="email" placeholder="Email"
+            class="w-full p-3 mb-3 border rounded-lg" required>
 
-<div class="relative mb-3">
-<input type="password" id="password" name="password"
-placeholder="Password"
-class="w-full p-2 border rounded pr-10" required>
+        <!-- PASSWORD WITH EYE -->
+        <div class="relative mb-4">
+            <input type="password" id="password" name="password"
+                placeholder="Password"
+                class="w-full p-3 border rounded-lg pr-10" required>
 
-<button type="button" onclick="toggle()"
-class="absolute right-2 top-2">👁️</button>
-</div>
+            <button type="button"
+                onclick="togglePassword()"
+                class="absolute right-3 top-3 text-xl">
+                👁️
+            </button>
+        </div>
 
-<button type="submit"
-class="w-full bg-green-500 text-white p-2 rounded">
-Register
-</button>
+        <button type="submit"
+            class="w-full bg-green-500 text-white p-3 rounded-lg">
+            Register
+        </button>
 
-</form>
+    </form>
+
+    <p class="text-center mt-4 text-sm">
+        Already have account?
+        <a href="{{ url_for('user_login') }}" class="text-green-700 font-bold">
+            Login here
+        </a>
+    </p>
 
 </div>
 
 <script>
-function toggle(){
-    const p = document.getElementById("password");
-    p.type = p.type === "password" ? "text" : "password";
+function togglePassword() {
+    const pass = document.getElementById("password");
+
+    if (pass.type === "password") {
+        pass.type = "text";
+    } else {
+        pass.type = "password";
+    }
 }
 </script>
 
