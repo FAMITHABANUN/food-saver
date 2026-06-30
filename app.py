@@ -1,12 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 import os
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+import smtplib
+from email.mime.text import MIMEText
 
 app = Flask(__name__)
-app.secret_key = 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
-
+app.secret_key = "foodsaver_final_secure_key"
 
 DB = "foodsaver.db"
 
@@ -46,7 +45,7 @@ init_db()
 def home():
     return render_template("home.html")
 
-# ================= REGISTER =================
+# ================= REGISTER (WITH EMAIL ONLY) =================
 @app.route("/user_register", methods=["GET", "POST"])
 def user_register():
     if request.method == "POST":
@@ -64,29 +63,38 @@ def user_register():
             )
             conn.commit()
 
-            # ================= SENDGRID EMAIL =================
+            # ================= EMAIL SYSTEM =================
             try:
-                message = Mail(
-                    from_email="YOUR_VERIFIED_EMAIL",
-                    to_emails=email,
-                    subject="🌟 Welcome to Food Saver!",
-                    html_content=f"""
-                    <h2>Hello {name}, 👋</h2>
-                    <p>Welcome to <b>Food Saver</b>!</p>
-                    <p>Your account has been created successfully.</p>
-                    <p>Thank you for joining our mission 🌱</p>
-                    <br>
-                    <p>Food Saver Team 🚀</p>
-                    """
-                )
+                sender_email = "famibanu786@gmail.com"
+                sender_password = "yfaj dhfk mxlk lpqx"  # Gmail App Password
 
-                sg = SendGridAPIClient(os.getenv("SENDGRID_API_KEY"))
-                response = sg.send(message)
+                msg = MIMEText(f"""
+Hello {name}, 👋
 
-                print("Email sent:", response.status_code)
+🌟 Welcome to FOOD SAVER 🌟
+
+Your account has been successfully created.
+
+Thank you for joining our mission to reduce food waste 🌱
+
+Best regards,
+Food Saver Team 🚀
+""")
+
+                msg["Subject"] = "Welcome to Food Saver!"
+                msg["From"] = sender_email
+                msg["To"] = email
+
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, sender_password)
+                server.send_message(msg)
+                server.quit()
+
+                print("Email sent successfully")
 
             except Exception as e:
-                print("Email failed:", e)
+                print("Email failed but app continues:", e)
 
             flash("Registration Successful!")
             return redirect(url_for("user_login"))
@@ -121,11 +129,11 @@ def user_login():
             session["user"] = email
             return redirect(url_for("donate_food"))
         else:
-            flash("Invalid login")
+            flash("Invalid login credentials")
 
     return render_template("user_login.html")
 
-# ================= DONATE =================
+# ================= DONATE FOOD =================
 @app.route("/donate_food", methods=["GET", "POST"])
 def donate_food():
     if "user" not in session:
@@ -156,17 +164,38 @@ def donate_food():
 def success():
     return render_template("success.html")
 
-# ================= ADMIN =================
+# ================= TRACK =================
+@app.route("/track_donation")
+def track_donation():
+    if "user" not in session:
+        return redirect(url_for("user_login"))
+
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT food_name, quantity, location, status, delivery_boy
+        FROM donations
+        WHERE user_email=?
+    """, (session["user"],))
+
+    data = cur.fetchall()
+    conn.close()
+
+    return render_template("track_donation.html", donations=data)
+
+# ================= ADMIN LOGIN =================
 @app.route("/admin_login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
         if request.form.get("username") == "admin" and request.form.get("password") == "admin123":
             session["admin"] = True
             return redirect(url_for("admin_dashboard"))
-        flash("Invalid admin login")
+        flash("Invalid admin credentials")
 
     return render_template("admin_login.html")
 
+# ================= ADMIN DASHBOARD =================
 @app.route("/admin_dashboard")
 def admin_dashboard():
     if "admin" not in session:
@@ -181,6 +210,29 @@ def admin_dashboard():
     conn.close()
 
     return render_template("admin_dashboard.html", donations=data)
+
+# ================= UPDATE STATUS =================
+@app.route("/update_status/<int:id>", methods=["POST"])
+def update_status(id):
+    if "admin" not in session:
+        return redirect(url_for("admin_login"))
+
+    status = request.form.get("status")
+    delivery_boy = request.form.get("delivery_boy")
+
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE donations
+        SET status=?, delivery_boy=?
+        WHERE id=?
+    """, (status, delivery_boy, id))
+
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for("admin_dashboard"))
 
 # ================= LOGOUT =================
 @app.route("/logout")
