@@ -55,8 +55,7 @@ init_db()
 def home():
     return render_template("home.html")
 
-# ================= REGISTER =================
-@app.route("/user_register", methods=["GET", "POST"])
+# ===@app.route("/user_register", methods=["GET", "POST"])
 def user_register():
     if request.method == "POST":
         name = request.form.get("name")
@@ -73,7 +72,7 @@ def user_register():
             )
             conn.commit()
 
-            # ================= EMAIL (SAFE FIXED) =================
+            # ================= EMAIL (FORCED + SAFE) =================
             try:
                 msg = Message(
                     subject="🌟 Welcome to Food Saver!",
@@ -89,19 +88,18 @@ Your account has been successfully created.
 
 Thank you for joining our mission to reduce food waste.
 
-Best Regards,
+Best regards,
 Food Saver Team
 """
 
                 mail.send(msg)
-                print("Email sent successfully")
 
             except Exception as e:
-                print("Email failed:", e)
+                print("EMAIL ERROR:", e)
 
             flash("Registration Successful!")
 
-            # ✅ FIXED REDIRECT (THIS WAS YOUR BUG)
+            # 🔥 IMPORTANT FIX (force redirect after processing)
             return redirect(url_for("user_login"))
 
         except sqlite3.IntegrityError:
