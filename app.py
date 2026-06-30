@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
-import os
 import smtplib
 from email.mime.text import MIMEText
 
@@ -45,7 +44,7 @@ init_db()
 def home():
     return render_template("home.html")
 
-# ================= REGISTER (WITH EMAIL ONLY) =================
+# ================= REGISTER =================
 @app.route("/user_register", methods=["GET", "POST"])
 def user_register():
     if request.method == "POST":
@@ -66,35 +65,35 @@ def user_register():
             # ================= EMAIL SYSTEM =================
             try:
                 sender_email = "famibanu321@gmail.com"
-                sender_password = "yfaj dhfk mxlk lpqx"  # Gmail App Password
+                sender_password = "yfaj dhfk mxlk lpqx"
 
                 msg = MIMEText(f"""
 Hello {name}, 👋
 
 🌟 Welcome to FOOD SAVER 🌟
 
-Your account has been successfully created.
+Your account has been created successfully.
 
-Thank you for joining our mission to reduce food waste 🌱
+Thank you for joining our mission 🌱
 
 Best regards,
 Food Saver Team 🚀
 """)
 
-                msg["Subject"] = "Welcome to Food Saver!"
+                msg["Subject"] = "Welcome to Food Saver"
                 msg["From"] = sender_email
                 msg["To"] = email
 
                 server = smtplib.SMTP("smtp.gmail.com", 587)
                 server.starttls()
                 server.login(sender_email, sender_password)
-                server.send_message(msg)
+                server.sendmail(sender_email, email, msg.as_string())
                 server.quit()
 
-                print("Email sent successfully")
+                print("EMAIL SENT SUCCESSFULLY")
 
             except Exception as e:
-                print("Email failed but app continues:", e)
+                print("EMAIL ERROR (app continues):", e)
 
             flash("Registration Successful!")
             return redirect(url_for("user_login"))
@@ -129,11 +128,11 @@ def user_login():
             session["user"] = email
             return redirect(url_for("donate_food"))
         else:
-            flash("Invalid login credentials")
+            flash("Invalid login")
 
     return render_template("user_login.html")
 
-# ================= DONATE FOOD =================
+# ================= DONATE =================
 @app.route("/donate_food", methods=["GET", "POST"])
 def donate_food():
     if "user" not in session:
@@ -164,27 +163,7 @@ def donate_food():
 def success():
     return render_template("success.html")
 
-# ================= TRACK =================
-@app.route("/track_donation")
-def track_donation():
-    if "user" not in session:
-        return redirect(url_for("user_login"))
-
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-
-    cur.execute("""
-        SELECT food_name, quantity, location, status, delivery_boy
-        FROM donations
-        WHERE user_email=?
-    """, (session["user"],))
-
-    data = cur.fetchall()
-    conn.close()
-
-    return render_template("track_donation.html", donations=data)
-
-# ================= ADMIN LOGIN =================
+# ================= ADMIN =================
 @app.route("/admin_login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
@@ -195,7 +174,6 @@ def admin_login():
 
     return render_template("admin_login.html")
 
-# ================= ADMIN DASHBOARD =================
 @app.route("/admin_dashboard")
 def admin_dashboard():
     if "admin" not in session:
@@ -211,29 +189,6 @@ def admin_dashboard():
 
     return render_template("admin_dashboard.html", donations=data)
 
-# ================= UPDATE STATUS =================
-@app.route("/update_status/<int:id>", methods=["POST"])
-def update_status(id):
-    if "admin" not in session:
-        return redirect(url_for("admin_login"))
-
-    status = request.form.get("status")
-    delivery_boy = request.form.get("delivery_boy")
-
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-
-    cur.execute("""
-        UPDATE donations
-        SET status=?, delivery_boy=?
-        WHERE id=?
-    """, (status, delivery_boy, id))
-
-    conn.commit()
-    conn.close()
-
-    return redirect(url_for("admin_dashboard"))
-
 # ================= LOGOUT =================
 @app.route("/logout")
 def logout():
@@ -247,4 +202,4 @@ def admin_logout():
 
 # ================= RUN =================
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+    app.run(host="0.0.0.0", port=10000, debug=False)
