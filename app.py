@@ -168,7 +168,7 @@ def donate_food():
         location = request.form.get("location")
         user_email = session["user"]
 
-        # Save donation to database
+        # ================= SAVE TO DATABASE =================
         conn = sqlite3.connect(DB)
         cur = conn.cursor()
 
@@ -185,7 +185,7 @@ def donate_food():
         conn.commit()
         conn.close()
 
-        # ================= EMAIL (SAFE VERSION) =================
+        # ================= EMAIL (NON-BLOCKING STYLE) =================
         try:
             msg = Message(
                 subject="❤️ Food Donation Confirmation | FoodSaver",
@@ -193,36 +193,30 @@ def donate_food():
             )
 
             msg.body = f"""
-Hello Companion, 👋
+Hello Companion 👋
 
-❤️ Thank you so much for your kind heart and generous food donation! ❤️
+❤️ Thank you for your food donation!
 
-📝 Here are your details:
---------------------------------------------------
 🍲 Food Name : {food_name}
 📊 Quantity  : {quantity}
 📍 Location  : {location}
---------------------------------------------------
 
-🙏 Your support helps feed those in need.
+🙏 Your contribution helps someone in need.
 With gratitude,
-❤️ FoodSaver Team
+FoodSaver Team
 """
 
             mail.send(msg)
 
         except Exception as e:
-            print("Email failed but donation saved:", e)
+            print("Email failed:", e)
 
-        # Redirect to success page ALWAYS
+        # ================= INSTANT REDIRECT =================
         return redirect(url_for("success"))
 
     return render_template("donate_food.html")
-
     
-
-
-# ================= SUCCESS =================
+    # ================= SUCCESS =================
 @app.route("/success")
 def success():
     return render_template("success.html")
