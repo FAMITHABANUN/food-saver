@@ -27,23 +27,25 @@ def init_db():
 
 init_db()
 
-# ================= SAFE EMAIL =================
+# ================= SAFE EMAIL (NEVER CRASHES APP) =================
 def send_email(name, email):
     try:
         sender_email = "famibanu321@gmail.com"
-        sender_password = "yfajdhfkmxlklpqx"
+        sender_password = "yfaj dhgk mxlk lpqx"
 
         msg = MIMEText(f"""
 Hello {name}, 👋
 
 Welcome to FOOD SAVER 🌱
 
-Your account is created successfully.
+Your account is successfully created.
 
-Thank you!
+Thank you for joining us!
+
+- Food Saver Team
 """)
 
-        msg["Subject"] = "Food Saver Welcome"
+        msg["Subject"] = "Welcome to Food Saver"
         msg["From"] = sender_email
         msg["To"] = email
 
@@ -56,7 +58,7 @@ Thank you!
         print("EMAIL SENT")
 
     except Exception as e:
-        print("EMAIL FAILED:", e)
+        print("EMAIL FAILED (ignored):", e)
 
 # ================= HOME =================
 @app.route("/")
@@ -81,7 +83,6 @@ def user_register():
             )
             conn.commit()
 
-            # EMAIL (SAFE - WILL NOT BREAK APP)
             send_email(name, email)
 
             flash("Registration Successful!")
@@ -115,16 +116,64 @@ def user_login():
 
         if user:
             session["user"] = email
-            return redirect(url_for("home"))
+            return redirect(url_for("donate_food"))
         else:
             flash("Invalid login")
 
     return render_template("user_login.html")
 
+# ================= DONATE FOOD =================
+@app.route("/donate_food", methods=["GET", "POST"])
+def donate_food():
+    if "user" not in session:
+        return redirect(url_for("user_login"))
+
+    if request.method == "POST":
+        return redirect(url_for("success"))
+
+    return render_template("donate_food.html")
+
+# ================= SUCCESS =================
+@app.route("/success")
+def success():
+    return render_template("success.html")
+
+# ================= TRACK =================
+@app.route("/track_donation")
+def track_donation():
+    if "user" not in session:
+        return redirect(url_for("user_login"))
+
+    return render_template("track_donation.html")
+
+# ================= ADMIN LOGIN =================
+@app.route("/admin_login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        if request.form.get("username") == "admin" and request.form.get("password") == "admin123":
+            session["admin"] = True
+            return redirect(url_for("admin_dashboard"))
+        flash("Invalid admin credentials")
+
+    return render_template("admin_login.html")
+
+# ================= ADMIN DASHBOARD =================
+@app.route("/admin_dashboard")
+def admin_dashboard():
+    if "admin" not in session:
+        return redirect(url_for("admin_login"))
+
+    return render_template("admin_dashboard.html")
+
 # ================= LOGOUT =================
 @app.route("/logout")
 def logout():
     session.pop("user", None)
+    return redirect(url_for("home"))
+
+@app.route("/admin_logout")
+def admin_logout():
+    session.pop("admin", None)
     return redirect(url_for("home"))
 
 # ================= RUN =================
