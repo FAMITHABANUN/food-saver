@@ -1,125 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Saver | Register</title>
+<meta charset="UTF-8">
+<title>Register</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="/static/style.css">
-
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-image: url("/static/1000128894.jpg");
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-color: #ffffff;
-        }
-
-        .serif-title {
-            font-family: 'Cormorant Garamond', serif;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 2px solid rgba(255, 255, 255, 0.45);
-        }
-    </style>
+<style>
+body {
+    font-family: Poppins;
+    background: #f5f5f5;
+}
+</style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center p-6">
+<body class="flex justify-center items-center min-h-screen">
 
-    <div class="glass-card rounded-3xl shadow-2xl p-8 md:p-10 w-full max-w-md">
+<div class="bg-white p-8 rounded-xl shadow-md w-96">
 
-        <div class="flex items-center justify-center gap-3 mb-6">
-            <span class="text-4xl">🌱</span>
-            <h1 class="serif-title text-4xl font-bold text-gray-800">
-                Create Account
-            </h1>
-        </div>
+<h2 class="text-2xl font-bold mb-6 text-center">Create Account</h2>
 
-        <form action="{{ url_for('user_register') }}" method="POST" class="space-y-4">
+<form method="POST">
 
-            <!-- NAME -->
-            <div>
-                <label class="block text-gray-800 text-left mb-1 font-semibold ml-1">Full Name</label>
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Enter your full name"
-                    required
-                    class="w-full bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none shadow-inner"
-                >
-            </div>
+<input type="text" name="name" placeholder="Name"
+class="w-full p-2 border rounded mb-3" required>
 
-            <!-- EMAIL -->
-            <div>
-                <label class="block text-gray-800 text-left mb-1 font-semibold ml-1">Email Address</label>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="name@example.com"
-                    required
-                    class="w-full bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none shadow-inner"
-                >
-            </div>
+<input type="email" name="email" placeholder="Email"
+class="w-full p-2 border rounded mb-3" required>
 
-            <!-- PASSWORD -->
-            <div class="relative">
-                <label class="block text-gray-800 text-left mb-1 font-semibold ml-1">Password</label>
+<!-- PASSWORD WITH EYE -->
+<div class="relative mb-3">
 
-                <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="••••••••"
-                    required
-                    class="w-full bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none shadow-inner"
-                >
+<input type="password" name="password" id="password"
+placeholder="Password"
+class="w-full p-2 border rounded pr-10" required>
 
-                <button type="button"
-                        onclick="togglePassword()"
-                        class="absolute right-3 top-10 text-sm text-emerald-700 font-bold">
-                    Show
-                </button>
-            </div>
+<button type="button" onclick="togglePassword()"
+class="absolute right-3 top-2 text-xl">
+👁️
+</button>
 
-            <!-- BUTTON -->
-            <button
-                type="submit"
-                class="w-full bg-emerald-500 text-white font-bold py-3.5 rounded-full hover:bg-emerald-600 hover:scale-[1.02] duration-200 transition-all shadow-md"
-            >
-                Register Account
-            </button>
+</div>
 
-        </form>
+<button type="submit"
+class="w-full bg-green-500 text-white p-2 rounded">
+Register
+</button>
 
-        <p class="text-center text-gray-700 text-xs mt-5 font-medium">
-            Already have an account?
-            <a href="{{ url_for('user_login') }}" class="text-emerald-700 font-bold hover:underline ml-1">
-                Login here
-            </a>
-        </p>
-    </div>
+</form>
 
-    <!-- PASSWORD TOGGLE SCRIPT -->
-    <script>
-        function togglePassword() {
-            const pass = document.getElementById("password");
-            if (pass.type === "password") {
-                pass.type = "text";
-            } else {
-                pass.type = "password";
-            }
-        }
-    </script>
+</div>
+
+<script>
+function togglePassword() {
+    const pass = document.getElementById("password");
+
+    if (pass.type === "password") {
+        pass.type = "text";
+    } else {
+        pass.type = "password";
+    }
+}
+</script>
 
 </body>
 </html>
