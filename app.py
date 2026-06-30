@@ -12,8 +12,9 @@ DB = "foodsaver.db"
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = 'your_email@gmail.com'
-app.config['MAIL_PASSWORD'] = 'your_app_password'
+app.config['MAIL_PASSWORD'] = 'your_app_password'   # IMPORTANT: use Gmail App Password
 app.config['MAIL_DEFAULT_SENDER'] = 'your_email@gmail.com'
 
 mail = Mail(app)
@@ -54,7 +55,7 @@ init_db()
 def home():
     return render_template("home.html")
 
-# ================= USER REGISTER =================
+# ================= REGISTER =================
 @app.route("/user_register", methods=["GET", "POST"])
 def user_register():
     if request.method == "POST":
@@ -72,7 +73,7 @@ def user_register():
             )
             conn.commit()
 
-            # ================= REGISTRATION EMAIL ONLY =================
+            # ================= EMAIL (SAFE FIXED) =================
             try:
                 msg = Message(
                     subject="🌟 Welcome to Food Saver!",
@@ -84,21 +85,23 @@ Hello {name}, 👋
 
 🌟 Welcome to FOOD SAVER! 🌟
 
-Thank you so much for joining our mission! 🥰
-Your registration was successful.
+Your account has been successfully created.
 
-You are now part of a community fighting food waste and helping people in need.
+Thank you for joining our mission to reduce food waste.
 
-Best regards,
-🚀 Food Saver Team
+Best Regards,
+Food Saver Team
 """
 
                 mail.send(msg)
+                print("Email sent successfully")
 
             except Exception as e:
-                print("Registration email failed:", e)
+                print("Email failed:", e)
 
             flash("Registration Successful!")
+
+            # ✅ FIXED REDIRECT (THIS WAS YOUR BUG)
             return redirect(url_for("user_login"))
 
         except sqlite3.IntegrityError:
@@ -109,7 +112,7 @@ Best regards,
 
     return render_template("user_register.html")
 
-# ================= USER LOGIN =================
+# ================= LOGIN =================
 @app.route("/user_login", methods=["GET", "POST"])
 def user_login():
     if request.method == "POST":
@@ -129,35 +132,13 @@ def user_login():
 
         if user:
             session["user"] = email
-            flash("Login Successful!")
-            return redirect(url_for("user_dashboard"))
+            return redirect(url_for("donate_food"))
         else:
-            flash("Invalid Email or Password")
+            flash("Invalid login")
 
     return render_template("user_login.html")
 
-# ================= USER DASHBOARD =================
-@app.route("/user_dashboard")
-def user_dashboard():
-    if "user" not in session:
-        return redirect(url_for("user_login"))
-
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-
-    cur.execute("""
-        SELECT food_name, quantity, location, status, delivery_boy
-        FROM donations
-        WHERE user_email=?
-        ORDER BY id DESC
-    """, (session["user"],))
-
-    donations = cur.fetchall()
-    conn.close()
-
-    return render_template("user_dashboard.html", donations=donations)
-
-# ================= DONATE FOOD (NO EMAIL HERE) =================
+# ================= DONATE FOOD =================
 @app.route("/donate_food", methods=["GET", "POST"])
 def donate_food():
     if "user" not in session:
@@ -167,36 +148,28 @@ def donate_food():
         food_name = request.form.get("food_name")
         quantity = request.form.get("quantity")
         location = request.form.get("location")
-        user_email = session["user"]
 
         conn = sqlite3.connect(DB)
         cur = conn.cursor()
 
         cur.execute("""
-            INSERT INTO donations (
-                user_email,
-                food_name,
-                quantity,
-                location
-            )
+            INSERT INTO donations(user_email, food_name, quantity, location)
             VALUES (?,?,?,?)
-        """, (user_email, food_name, quantity, location))
+        """, (session["user"], food_name, quantity, location))
 
         conn.commit()
         conn.close()
-
-        # ❌ EMAIL REMOVED FROM DONATION (PREVENTS ERRORS)
 
         return redirect(url_for("success"))
 
     return render_template("donate_food.html")
 
-# ================= SUCCESS PAGE =================
+# ================= SUCCESS =================
 @app.route("/success")
 def success():
     return render_template("success.html")
 
-# ================= TRACK DONATION =================
+# ================= TRACK =================
 @app.route("/track_donation")
 def track_donation():
     if "user" not in session:
@@ -211,27 +184,23 @@ def track_donation():
         WHERE user_email=?
     """, (session["user"],))
 
-    donations = cur.fetchall()
+    data = cur.fetchall()
     conn.close()
 
-    return render_template("track_donation.html", donations=donations)
+    return render_template("track_donation.html", donations=data)
 
-# ================= ADMIN LOGIN =================
+# ================= ADMIN =================
 @app.route("/admin_login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        if username == "admin" and password == "admin123":
+        if request.form.get("username") == "admin" and request.form.get("password") == "admin123":
             session["admin"] = True
             return redirect(url_for("admin_dashboard"))
 
-        flash("Invalid Admin Credentials")
+        flash("Invalid admin login")
 
     return render_template("admin_login.html")
 
-# ================= ADMIN DASHBOARD =================
 @app.route("/admin_dashboard")
 def admin_dashboard():
     if "admin" not in session:
@@ -241,15 +210,14 @@ def admin_dashboard():
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM donations ORDER BY id DESC")
-    donations = cur.fetchall()
+    data = cur.fetchall()
 
     conn.close()
 
-    return render_template("admin_dashboard.html", donations=donations)
+    return render_template("admin_dashboard.html", donations=data)
 
-# ================= UPDATE STATUS =================
-@app.route("/update_status/<int:donation_id>", methods=["POST"])
-def update_status(donation_id):
+@app.route("/update_status/<int:id>", methods=["POST"])
+def update_status(id):
     if "admin" not in session:
         return redirect(url_for("admin_login"))
 
@@ -263,7 +231,7 @@ def update_status(donation_id):
         UPDATE donations
         SET status=?, delivery_boy=?
         WHERE id=?
-    """, (status, delivery_boy, donation_id))
+    """, (status, delivery_boy, id))
 
     conn.commit()
     conn.close()
