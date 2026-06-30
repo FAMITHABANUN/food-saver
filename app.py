@@ -8,17 +8,16 @@ app.secret_key = "foodsaver_final_secure_key"
 DB = "foodsaver.db"
 
 # ==========================================
-# LIVE EMAIL SETTING CONFIGURATION
+# EMAIL CONFIGURATION
 # ==========================================
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'famibanu786@gmail.com'
-app.config['MAIL_PASSWORD'] = 'lguxywmaptfnxkxq'
+app.config['MAIL_PASSWORD'] = 'fewkzkdmrgsxasgt'
 app.config['MAIL_DEFAULT_SENDER'] = 'famibanu786@gmail.com'
 
 mail = Mail(app)
-
 
 # ================= DATABASE =================
 def init_db():
@@ -51,21 +50,17 @@ def init_db():
     conn.commit()
     conn.close()
 
-
 init_db()
-
 
 # ================= HOME =================
 @app.route("/")
 def home():
     return render_template("home.html")
 
-
 # ================= USER REGISTER =================
 @app.route("/user_register", methods=["GET", "POST"])
 def user_register():
     if request.method == "POST":
-        # Using .get() ensures the code won't crash even if the HTML casing differs
         name = request.form.get("name")
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password")
@@ -79,8 +74,7 @@ def user_register():
                 (name, email, password)
             )
             conn.commit()
-            
-            # --- EYE-CATCHING AUTOMATIC REGISTRATION EMAIL ---
+
             try:
                 msg = Message(
                     subject="✨ Welcome to Food Saver! Let's Make a Difference! 🌱",
@@ -89,12 +83,10 @@ def user_register():
                 msg.body = (
                     f"Hello {name}, 👋\n\n"
                     f"🌟 Welcome to FOOD SAVER! 🌟\n\n"
-                    f"Thank you so much for joining our mission! 🥰 Your registration was successful. "
-                    f"By joining our community, you are helping us fight food waste and bring "
-                    f"smiles to countless faces. 📦✨\n\n"
-                    f"Let's save extra food and support communities together! 🌱🤝\n\n"
+                    f"Thank you for joining Food Saver.\n\n"
+                    f"Your registration was successful.\n\n"
                     f"Best regards,\n"
-                    f"🚀 The Food Saver Team"
+                    f"Food Saver Team"
                 )
                 mail.send(msg)
             except Exception as e:
@@ -110,7 +102,6 @@ def user_register():
             conn.close()
 
     return render_template("user_register.html")
-
 
 # ================= USER LOGIN =================
 @app.route("/user_login", methods=["GET", "POST"])
@@ -131,10 +122,11 @@ def user_login():
         conn.close()
 
         if user:
-            session["user"] = user[2]
+            session["user"] = email
+            flash("Login Successful!")
             return redirect(url_for("donate_food"))
-
-        flash("Invalid email or password")
+        else:
+            flash("Invalid Email or Password")
 
     return render_template("user_login.html")
 
@@ -163,40 +155,48 @@ def donate_food():
         conn = sqlite3.connect(DB)
         cur = conn.cursor()
 
-        cur.execute("""
-        INSERT INTO donations(
-            user_email,
-            food_name,
-            quantity,
-            location
+        cur.execute(
+            """
+            INSERT INTO donations(
+                user_email,
+                food_name,
+                quantity,
+                location
+            )
+            VALUES (?,?,?,?)
+            """,
+            (user_email, food_name, quantity, location)
         )
-        VALUES (?,?,?,?)
-        """, (user_email, food_name, quantity, location))
 
         conn.commit()
         conn.close()
 
-        # --- EYE-CATCHING AUTOMATIC FOOD DONATION RECEIPT EMAIL ---
         try:
             msg = Message(
-                subject="🍛 Your Food Donation Details Confirmation - Food Saver! 🎁",
-                recipients=[user_email]
-            )
-            msg.body = (
-                f"Hello Companion, 👋\n\n"
-                f"❤️ Thank you so much for your kind heart and generous food donation! ❤️\n"
-                f"Your support is immensely valuable in feeding those in need. 🙏✨\n\n"
-                f"📝 Here are your complete submission details:\n"
-                f"--------------------------------------------------\n"
-                f"🍲 Food Name : {food_name}\n"
-                f"📊 Quantity  : {quantity}\n"
-                f"📍 Location  : {location}\n"
-                f"--------------------------------------------------\n\n"
-                f"Our team will handle the rest. Finally, we say a heartfelt thank you for making a real difference today! 🌟🌎"
-            )
+              subject="❤️ Food Donation Confirmation | FoodSaver",
+               recipients=[user_email]
+)
+            msg.body = f"""
+            Hello Companion, 👋
+            ❤️ Thank you so much for your kind heart and generous food donation! ❤️
+            Your support is immensely valuable in feeding those in need. 🙏✨
+            📝 Here are your complete submission details:
+            --------------------------------------------------
+            🍲 Food Name : {food_name}
+            📊 Quantity  : {quantity}
+            📍 Location  : {location}
+            --------------------------------------------------
+            🚚 Our team will verify your donation and arrange pickup as soon as possible.
+            🌱 Every meal you share brings hope to someone in need.
+            Finally, we say a heartfelt thank you for making a real difference today! 🌟🌎
+            With gratitude,
+            ❤️ FoodSaver Team
+            """
+
             mail.send(msg)
+
         except Exception as e:
-            print(f"Donation Summary Email failed: {e}")
+            print(f"Donation Email Error: {e}")
 
         return redirect(url_for("success"))
 
@@ -223,12 +223,13 @@ def track_donation():
         (session["user"],)
     )
 
-    data = cur.fetchall()
+    donations = cur.fetchall()
+
     conn.close()
 
     return render_template(
         "track_donation.html",
-        donations=data
+        donations=donations
     )
 
 
@@ -238,12 +239,11 @@ def admin_login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-
         if username == "admin" and password == "admin123":
-            session["admin"] = True
-            return redirect(url_for("admin_dashboard"))
+         session["admin"] = True 
+         return redirect(url_for("admin_dashboard"))
 
-        flash("Invalid admin credentials")
+        flash("Invalid Admin Credentials")
 
     return render_template("admin_login.html")
 
@@ -257,41 +257,34 @@ def admin_dashboard():
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
 
-    cur.execute("SELECT * FROM donations")
+    cur.execute("SELECT * FROM donations ORDER BY id DESC")
+    donations = cur.fetchall()
 
-    data = cur.fetchall()
     conn.close()
 
     return render_template(
         "admin_dashboard.html",
-        donations=data
+        donations=donations
     )
 
 
-# ================= UPDATE STATUS =================
-@app.route("/update_status/<int:id>/<status>")
-def update_status(id, status):
+# ================= UPDATE DONATION STATUS =================
+@app.route("/update_status/<int:donation_id>", methods=["POST"])
+def update_status(donation_id):
     if "admin" not in session:
         return redirect(url_for("admin_login"))
 
-    valid_status = [
-        "Pending",
-        "Picked",
-        "On the Way",
-        "Delivered"
-    ]
-
-    if status not in valid_status:
-        flash("Invalid Status")
-        return redirect(url_for("admin_dashboard"))
+    status = request.form.get("status")
+    delivery_boy = request.form.get("delivery_boy")
 
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
 
-    cur.execute(
-        "UPDATE donations SET status=? WHERE id=?",
-        (status, id)
-    )
+    cur.execute("""
+        UPDATE donations
+        SET status = ?, delivery_boy = ?
+        WHERE id = ?
+    """, (status, delivery_boy, donation_id))
 
     conn.commit()
     conn.close()
@@ -299,40 +292,26 @@ def update_status(id, status):
     return redirect(url_for("admin_dashboard"))
 
 
-# ================= ASSIGN DELIVERY =================
-@app.route("/assign_delivery/<int:id>", methods=["POST"])
-def assign_delivery(id):
-    if "admin" not in session:
-        return redirect(url_for("admin_login"))
-
-    delivery_boy = request.form.get("delivery_boy", "").strip()
-
-    if delivery_boy == "":
-        flash("Please enter delivery person name")
-        return redirect(url_for("admin_dashboard"))
-
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-
-    cur.execute(
-        "UPDATE donations SET delivery_boy=? WHERE id=?",
-        (delivery_boy, id)
-    )
-
-    conn.commit()
-    conn.close()
-
-    flash("Delivery person assigned")
-    return redirect(url_for("admin_dashboard"))
-
-
-# ================= LOGOUT =================
+# ================= USER LOGOUT =================
 @app.route("/logout")
 def logout():
-    session.clear()
+    session.pop("user", None)
     return redirect(url_for("home"))
 
 
-# ================= RUN =================
+# ================= ADMIN LOGOUT =================
+@app.route("/admin_logout")
+def admin_logout():
+    session.pop("admin", None)
+    return redirect(url_for("home"))
+
+
+# ================= RUN APPLICATION =================
+import os
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 10000)),
+        debug=False
+    )
