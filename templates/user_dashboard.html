@@ -5,18 +5,47 @@
 
 <style>
 body{
-margin:0;
-font-family:Poppins;
-background:linear-gradient(135deg,#0f172a,#1e293b,#0b1220);
-color:white;
-text-align:center;
+    margin:0;
+    font-family:Poppins, sans-serif;
+    background:linear-gradient(135deg,#0f172a,#1e293b,#0b1220);
+    color:white;
+    text-align:center;
+}
+
+h2{
+    margin-top:20px;
 }
 
 a{
-display:block;
-margin:10px;
-color:white;
-text-decoration:none;
+    display:inline-block;
+    margin:10px;
+    padding:10px 20px;
+    background:#22c55e;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+a:hover{
+    background:#16a34a;
+}
+
+table{
+    width:90%;
+    margin:20px auto;
+    border-collapse:collapse;
+    background:#111827;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+th,td{
+    padding:12px;
+    border-bottom:1px solid #374151;
+}
+
+th{
+    background:#1f2937;
 }
 </style>
 
@@ -24,11 +53,35 @@ text-decoration:none;
 
 <body>
 
-<h2>User Dashboard</h2>
+<h2>👤 User Dashboard</h2>
 
-<a href="/donate_food">Donate Food</a>
-<a href="/track_donation">Track Donation</a>
-<a href="/logout">Logout</a>
+<a href="/donate_food">🍲 Donate Food</a>
+<a href="/track_donation">📦 Track Donation</a>
+<a href="/logout">🚪 Logout</a>
+
+<hr>
+
+<h3>Your Donations</h3>
+
+<table>
+    <tr>
+        <th>Food Name</th>
+        <th>Quantity</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Delivery Boy</th>
+    </tr>
+
+    {% for d in donations %}
+    <tr>
+        <td>{{ d[0] }}</td>
+        <td>{{ d[1] }}</td>
+        <td>{{ d[2] }}</td>
+        <td>{{ d[3] }}</td>
+        <td>{{ d[4] }}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 </body>
 </html>

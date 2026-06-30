@@ -131,16 +131,32 @@ def user_login():
     return render_template("user_login.html")
 
 
-# ================= USER DASHBOARD =================
+# ================= USER DASHBOARD ===============
 @app.route("/user_dashboard")
 def user_dashboard():
     if "user" not in session:
         return redirect(url_for("user_login"))
 
-    return render_template("user_dashboard.html")
+    user_email = session["user"]
 
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
 
-# ================= DONATE FOOD =================
+    cur.execute("""
+        SELECT food_name, quantity, location, status, delivery_boy
+        FROM donations
+        WHERE user_email=?
+        ORDER BY id DESC
+    """, (user_email,))
+
+    donations = cur.fetchall()
+    conn.close()
+
+    return render_template(
+        "user_dashboard.html",
+        donations=donations,
+        user_email=user_email
+    )
 @app.route("/donate_food", methods=["GET", "POST"])
 def donate_food():
     if "user" not in session:
@@ -152,55 +168,58 @@ def donate_food():
         location = request.form.get("location")
         user_email = session["user"]
 
+        # Save donation to database
         conn = sqlite3.connect(DB)
         cur = conn.cursor()
 
-        cur.execute(
-            """
-            INSERT INTO donations(
+        cur.execute("""
+            INSERT INTO donations (
                 user_email,
                 food_name,
                 quantity,
                 location
             )
             VALUES (?,?,?,?)
-            """,
-            (user_email, food_name, quantity, location)
-        )
+        """, (user_email, food_name, quantity, location))
 
         conn.commit()
         conn.close()
 
+        # ================= EMAIL (SAFE VERSION) =================
         try:
             msg = Message(
-              subject="❤️ Food Donation Confirmation | FoodSaver",
-               recipients=[user_email]
-)
+                subject="❤️ Food Donation Confirmation | FoodSaver",
+                recipients=[user_email]
+            )
+
             msg.body = f"""
-            Hello Companion, 👋
-            ❤️ Thank you so much for your kind heart and generous food donation! ❤️
-            Your support is immensely valuable in feeding those in need. 🙏✨
-            📝 Here are your complete submission details:
-            --------------------------------------------------
-            🍲 Food Name : {food_name}
-            📊 Quantity  : {quantity}
-            📍 Location  : {location}
-            --------------------------------------------------
-            🚚 Our team will verify your donation and arrange pickup as soon as possible.
-            🌱 Every meal you share brings hope to someone in need.
-            Finally, we say a heartfelt thank you for making a real difference today! 🌟🌎
-            With gratitude,
-            ❤️ FoodSaver Team
-            """
+Hello Companion, 👋
+
+❤️ Thank you so much for your kind heart and generous food donation! ❤️
+
+📝 Here are your details:
+--------------------------------------------------
+🍲 Food Name : {food_name}
+📊 Quantity  : {quantity}
+📍 Location  : {location}
+--------------------------------------------------
+
+🙏 Your support helps feed those in need.
+With gratitude,
+❤️ FoodSaver Team
+"""
 
             mail.send(msg)
 
         except Exception as e:
-            print(f"Donation Email Error: {e}")
+            print("Email failed but donation saved:", e)
 
+        # Redirect to success page ALWAYS
         return redirect(url_for("success"))
 
     return render_template("donate_food.html")
+
+    
 
 
 # ================= SUCCESS =================
