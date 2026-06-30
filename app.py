@@ -65,7 +65,7 @@ def user_register():
 
             # ================= EMAIL SYSTEM =================
             try:
-                sender_email = "famibanu786@gmail.com"
+                sender_email = "famibanu321@gmail.com"
                 sender_password = "yfaj dhfk mxlk lpqx"  # Gmail App Password
 
                 msg = MIMEText(f"""
