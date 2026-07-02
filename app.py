@@ -195,13 +195,12 @@ def admin_dashboard():
 
     return render_template("admin_dashboard.html", donations=data)
 
-# ================= UPDATE STATUS =================
-@app.route("/update_status/<int:id>", methods=["POST"])
-def update_status(id):
+# ================= ASSIGN DELIVERY PERSON =================
+@app.route("/assign_delivery/<int:id>", methods=["POST"])
+def assign_delivery(id):
     if "admin" not in session:
         return redirect(url_for("admin_login"))
 
-    status = request.form.get("status")
     delivery_boy = request.form.get("delivery_boy")
 
     conn = sqlite3.connect(DB)
@@ -209,14 +208,42 @@ def update_status(id):
 
     cur.execute("""
         UPDATE donations
-        SET status=?, delivery_boy=?
+        SET delivery_boy=?, status='Picked'
         WHERE id=?
-    """, (status, delivery_boy, id))
+    """, (delivery_boy, id))
 
     conn.commit()
     conn.close()
 
+    flash("Delivery person assigned successfully.")
     return redirect(url_for("admin_dashboard"))
+
+
+# ================= UPDATE STATUS =================
+@app.route("/update_status/<int:id>/<status>")
+def update_status(id, status):
+    if "admin" not in session:
+        return redirect(url_for("admin_login"))
+
+    if status not in ["Pending", "Picked", "Delivered"]:
+        flash("Invalid status.")
+        return redirect(url_for("admin_dashboard"))
+
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE donations
+        SET status=?
+        WHERE id=?
+    """, (status, id))
+
+    conn.commit()
+    conn.close()
+
+    flash(f"Donation marked as {status}.")
+    return redirect(url_for("admin_dashboard"))
+        
 
 # ================= LOGOUT =================
 @app.route("/logout")
