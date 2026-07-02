@@ -2,13 +2,16 @@
 email_utils.py
 ----------------
 Standalone email-sending helper for Food Saver.
-Uses Python's built-in smtplib with Gmail SMTP.
 
-Required environment variables (set on Railway → Variables tab):
-    MAIL_SERVER    smtp.gmail.com
-    MAIL_PORT      587
-    MAIL_USERNAME  your Gmail address
-    MAIL_PASSWORD  your Gmail App Password (16 chars, no spaces)
+Uses Gmail API over HTTPS (OAuth2) instead of SMTP.
+This works on Render's free plan because HTTPS is not blocked.
+No third-party packages needed — uses Python's built-in urllib only.
+
+Required environment variables (set on Render → Environment tab):
+    GMAIL_CLIENT_ID      your Google OAuth client ID
+    GMAIL_CLIENT_SECRET  your Google OAuth client secret
+    GMAIL_REFRESH_TOKEN  your OAuth refresh token
+    GMAIL_SENDER         sender email e.g. famibanu786@gmail.com
 
 If sending fails for any reason, this module logs the error and
 returns False - it NEVER raises, so it can never break registration
@@ -16,40 +19,89 @@ or donation flows.
 """
 
 import os
-import smtplib
+import json
+import base64
 import logging
+import urllib.request
+import urllib.parse
+import urllib.error
 from email.mime.text import MIMEText
 
 logger = logging.getLogger("email_utils")
 
 
+def _get_access_token(client_id, client_secret, refresh_token):
+    """Exchange refresh token for a short-lived access token."""
+    data = urllib.parse.urlencode({
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "refresh_token": refresh_token,
+        "grant_type": "refresh_token"
+    }).encode("utf-8")
+
+    req = urllib.request.Request(
+        "https://oauth2.googleapis.com/token",
+        data=data,
+        method="POST"
+    )
+
+    with urllib.request.urlopen(req, timeout=10) as resp:
+        result = json.loads(resp.read().decode("utf-8"))
+        return result["access_token"]
+
+
 def _send_email(to_email, subject, body):
     """
-    Internal helper: sends a plain-text email via Gmail SMTP.
+    Internal helper: sends email via Gmail API over HTTPS.
     Returns True on success, False on any failure (never raises).
     """
-    mail_server = os.environ.get("MAIL_SERVER", "smtp.gmail.com")
-    mail_port = int(os.environ.get("MAIL_PORT", "587"))
-    mail_username = os.environ.get("MAIL_USERNAME")
-    mail_password = os.environ.get("MAIL_PASSWORD")
-    mail_from = os.environ.get("MAIL_FROM", mail_username)
+    client_id     = os.environ.get("GMAIL_CLIENT_ID")
+    client_secret = os.environ.get("GMAIL_CLIENT_SECRET")
+    refresh_token = os.environ.get("GMAIL_REFRESH_TOKEN")
+    sender        = os.environ.get("GMAIL_SENDER")
 
-    if not to_email or not mail_username or not mail_password:
-        logger.warning("Email not sent: missing recipient or SMTP credentials.")
+    if not all([client_id, client_secret, refresh_token, sender, to_email]):
+        logger.warning("Email not sent: missing credentials or recipient.")
         return False
 
     try:
+        # Step 1: get a fresh access token
+        access_token = _get_access_token(client_id, client_secret, refresh_token)
+
+        # Step 2: build the email message
         msg = MIMEText(body, "plain")
+        msg["To"]      = to_email
+        msg["From"]    = sender
         msg["Subject"] = subject
-        msg["From"] = mail_from
-        msg["To"] = to_email
 
-        with smtplib.SMTP(mail_server, mail_port, timeout=10) as server:
-            server.starttls()
-            server.login(mail_username, mail_password)
-            server.sendmail(mail_from, [to_email], msg.as_string())
+        # Step 3: base64url-encode the raw message
+        raw = base64.urlsafe_b64encode(msg.as_bytes()).decode("utf-8")
 
-        return True
+        # Step 4: send via Gmail API
+        payload = json.dumps({"raw": raw}).encode("utf-8")
+
+        req = urllib.request.Request(
+            "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+            data=payload,
+            headers={
+                "Authorization": f"Bearer {access_token}",
+                "Content-Type": "application/json"
+            },
+            method="POST"
+        )
+
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            if resp.status in (200, 201):
+                logger.info("Email sent successfully to %s", to_email)
+                return True
+            else:
+                logger.error("Gmail API returned status %s", resp.status)
+                return False
+
+    except urllib.error.HTTPError as e:
+        error_body = e.read().decode("utf-8", errors="ignore")
+        logger.error("Gmail API HTTP error %s for %s: %s", e.code, to_email, error_body)
+        return False
 
     except Exception as e:
         logger.error("Failed to send email to %s: %s", to_email, e)
