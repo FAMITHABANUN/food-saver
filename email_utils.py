@@ -2,16 +2,12 @@
 email_utils.py
 ----------------
 Standalone email-sending helper for Food Saver.
+Uses Brevo (formerly Sendinblue) API over HTTPS.
+Works perfectly on Render's free plan - no SMTP blocking issues.
 
-Uses Gmail API over HTTPS (OAuth2) instead of SMTP.
-This works on Render's free plan because HTTPS is not blocked.
-No third-party packages needed — uses Python's built-in urllib only.
-
-Required environment variables (set on Render → Environment tab):
-    GMAIL_CLIENT_ID      your Google OAuth client ID
-    GMAIL_CLIENT_SECRET  your Google OAuth client secret
-    GMAIL_REFRESH_TOKEN  your OAuth refresh token
-    GMAIL_SENDER         sender email e.g. famibanu786@gmail.com
+Required environment variable (set on Render → Environment tab):
+    BREVO_API_KEY   your Brevo API key (starts with xkeysib-)
+    MAIL_FROM       sender email (must match your Brevo account email)
 
 If sending fails for any reason, this module logs the error and
 returns False - it NEVER raises, so it can never break registration
@@ -20,72 +16,45 @@ or donation flows.
 
 import os
 import json
-import base64
 import logging
 import urllib.request
-import urllib.parse
 import urllib.error
-from email.mime.text import MIMEText
 
 logger = logging.getLogger("email_utils")
 
-
-def _get_access_token(client_id, client_secret, refresh_token):
-    """Exchange refresh token for a short-lived access token."""
-    data = urllib.parse.urlencode({
-        "client_id": client_id,
-        "client_secret": client_secret,
-        "refresh_token": refresh_token,
-        "grant_type": "refresh_token"
-    }).encode("utf-8")
-
-    req = urllib.request.Request(
-        "https://oauth2.googleapis.com/token",
-        data=data,
-        method="POST"
-    )
-
-    with urllib.request.urlopen(req, timeout=10) as resp:
-        result = json.loads(resp.read().decode("utf-8"))
-        return result["access_token"]
+BREVO_API_URL = "https://api.brevo.com/v3/smtp/email"
 
 
-def _send_email(to_email, subject, body):
+def _send_email(to_email, to_name, subject, body):
     """
-    Internal helper: sends email via Gmail API over HTTPS.
+    Internal helper: sends email via Brevo HTTPS API.
     Returns True on success, False on any failure (never raises).
     """
-    client_id     = os.environ.get("GMAIL_CLIENT_ID")
-    client_secret = os.environ.get("GMAIL_CLIENT_SECRET")
-    refresh_token = os.environ.get("GMAIL_REFRESH_TOKEN")
-    sender        = os.environ.get("GMAIL_SENDER")
+    api_key  = os.environ.get("BREVO_API_KEY")
+    mail_from = os.environ.get("MAIL_FROM", "famibanu786@gmail.com")
 
-    if not all([client_id, client_secret, refresh_token, sender, to_email]):
-        logger.warning("Email not sent: missing credentials or recipient.")
+    if not api_key or not to_email:
+        logger.warning("Email not sent: missing BREVO_API_KEY or recipient.")
         return False
 
     try:
-        # Step 1: get a fresh access token
-        access_token = _get_access_token(client_id, client_secret, refresh_token)
-
-        # Step 2: build the email message
-        msg = MIMEText(body, "plain")
-        msg["To"]      = to_email
-        msg["From"]    = sender
-        msg["Subject"] = subject
-
-        # Step 3: base64url-encode the raw message
-        raw = base64.urlsafe_b64encode(msg.as_bytes()).decode("utf-8")
-
-        # Step 4: send via Gmail API
-        payload = json.dumps({"raw": raw}).encode("utf-8")
+        payload = json.dumps({
+            "sender": {
+                "name": "Food Saver",
+                "email": mail_from
+            },
+            "to": [{"email": to_email, "name": to_name}],
+            "subject": subject,
+            "textContent": body
+        }).encode("utf-8")
 
         req = urllib.request.Request(
-            "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+            BREVO_API_URL,
             data=payload,
             headers={
-                "Authorization": f"Bearer {access_token}",
-                "Content-Type": "application/json"
+                "api-key": api_key,
+                "Content-Type": "application/json",
+                "Accept": "application/json"
             },
             method="POST"
         )
@@ -95,12 +64,12 @@ def _send_email(to_email, subject, body):
                 logger.info("Email sent successfully to %s", to_email)
                 return True
             else:
-                logger.error("Gmail API returned status %s", resp.status)
+                logger.error("Brevo API returned status %s", resp.status)
                 return False
 
     except urllib.error.HTTPError as e:
         error_body = e.read().decode("utf-8", errors="ignore")
-        logger.error("Gmail API HTTP error %s for %s: %s", e.code, to_email, error_body)
+        logger.error("Brevo API error %s for %s: %s", e.code, to_email, error_body)
         return False
 
     except Exception as e:
@@ -124,7 +93,7 @@ Thank you for joining us!
 Regards,
 Food Saver Team
 """
-    return _send_email(user_email, subject, body)
+    return _send_email(user_email, user_name, subject, body)
 
 
 def send_donation_email(user_email, user_name):
@@ -143,5 +112,5 @@ Thank you for making a difference.
 Regards,
 Food Saver Team
 """
-    return _send_email(user_email, subject, body)
+    return _send_email(user_email, user_name, subject, body)
     
