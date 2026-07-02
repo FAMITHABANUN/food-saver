@@ -144,22 +144,6 @@ def donate_food():
 
     return render_template("donate_food.html")
 
-# ================= TEMP: ONE-TIME RESET (REMOVE AFTER USE) =================
-# Visit /reset_users_TEMP?key=foodsaver_reset_2026 once in your browser to
-# clear all registered users. DELETE THIS ROUTE after use for security.
-@app.route("/reset_users_TEMP")
-def reset_users_temp():
-    if request.args.get("key") != "foodsaver_reset_2026":
-        return "Unauthorized", 403
-
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-    cur.execute("DELETE FROM users")
-    conn.commit()
-    conn.close()
-
-    return "All users deleted successfully. Remember to remove this route now."
-
 # ================= SUCCESS =================
 @app.route("/success")
 def success():
