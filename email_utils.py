@@ -2,24 +2,17 @@
 email_utils.py
 ----------------
 Standalone email-sending helper for Food Saver.
+Uses Python's built-in smtplib with Gmail SMTP.
 
-Uses Python's built-in smtplib so no new dependency needs to be added
-to requirements.txt. Works with Gmail SMTP, Outlook, SendGrid SMTP,
-Mailgun SMTP, Amazon SES SMTP, or any standard SMTP provider - just
-set the environment variables below.
+Required environment variables (set on Railway → Variables tab):
+    MAIL_SERVER    smtp.gmail.com
+    MAIL_PORT      587
+    MAIL_USERNAME  your Gmail address
+    MAIL_PASSWORD  your Gmail App Password (16 chars, no spaces)
 
-Required environment variables (set these on Render / your host):
-    MAIL_SERVER    e.g. "smtp.gmail.com"
-    MAIL_PORT      e.g. "587"
-    MAIL_USERNAME  the SMTP login / sender email address
-    MAIL_PASSWORD  the SMTP password or app password
-    MAIL_FROM      (optional) "From" address shown to recipients,
-                   defaults to MAIL_USERNAME if not set
-
-If MAIL_USERNAME / MAIL_PASSWORD are not configured, or if sending
-fails for any reason (bad credentials, network issue, etc.), this
-module logs the error and returns False - it NEVER raises, so it
-can never break registration or donation flows.
+If sending fails for any reason, this module logs the error and
+returns False - it NEVER raises, so it can never break registration
+or donation flows.
 """
 
 import os
@@ -32,7 +25,7 @@ logger = logging.getLogger("email_utils")
 
 def _send_email(to_email, subject, body):
     """
-    Internal helper: sends a plain-text email.
+    Internal helper: sends a plain-text email via Gmail SMTP.
     Returns True on success, False on any failure (never raises).
     """
     mail_server = os.environ.get("MAIL_SERVER", "smtp.gmail.com")
@@ -59,8 +52,6 @@ def _send_email(to_email, subject, body):
         return True
 
     except Exception as e:
-        # Any SMTP/network error is caught here so the caller's
-        # registration/donation flow is never interrupted.
         logger.error("Failed to send email to %s: %s", to_email, e)
         return False
 
@@ -101,4 +92,4 @@ Regards,
 Food Saver Team
 """
     return _send_email(user_email, subject, body)
-  
+    
