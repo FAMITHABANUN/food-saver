@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 import os
+from email_utils import send_registration_email, send_donation_email
 
 app = Flask(__name__)
 app.secret_key = "foodsaver_final_secure_key"
@@ -62,6 +63,10 @@ def user_register():
             )
             conn.commit()
 
+            # Send welcome email (errors are handled internally and never
+            # block registration - see email_utils.py)
+            send_registration_email(email, name)
+
             flash("Registration successful!")
             return redirect(url_for("user_login"))
 
@@ -120,6 +125,20 @@ def donate_food():
 
         conn.commit()
         conn.close()
+
+        # Send donation confirmation email (errors are handled internally
+        # and never block the donation flow - see email_utils.py)
+        try:
+            user_email = session["user"]
+            lookup_conn = sqlite3.connect(DB)
+            lookup_cur = lookup_conn.cursor()
+            lookup_cur.execute("SELECT name FROM users WHERE email=?", (user_email,))
+            row = lookup_cur.fetchone()
+            lookup_conn.close()
+            user_name = row[0] if row else user_email
+            send_donation_email(user_email, user_name)
+        except Exception:
+            pass
 
         return redirect(url_for("success"))
 
@@ -213,3 +232,4 @@ def admin_logout():
 # ================= RUN =================
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000, debug=False)
+
